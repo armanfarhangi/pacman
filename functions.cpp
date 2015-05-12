@@ -11,13 +11,13 @@
 #include <SDL2_ttf/SDL_ttf.h>
 #include <stdio.h>
 
-//initialize global objects
+//initialize external global objects
 SDL_Window* window = NULL;
-SDL_Renderer* renderer;
-TTF_Font* big_font;
-TTF_Font* medium_font;
-TTF_Font* small_font;
-TTF_Font* smallest_font;
+SDL_Renderer* renderer = NULL;
+TTF_Font* big_font = NULL;
+TTF_Font* medium_font = NULL;
+TTF_Font* small_font = NULL;
+TTF_Font* smallest_font = NULL;
 
 
 //setup SDL, window, renderer, SDL font, and SDL image
