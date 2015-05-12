@@ -75,7 +75,7 @@ void Texture::load_text(TTF_Font* font, SDL_Color color, std::string text)
 }
 
 //render texture or texture clip to window
-void Texture::render(int x, int y, SDL_Rect* clip)
+void Texture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip_type)
 {
     //point and dimensions for full texture to be rendered
     SDL_Rect render_rect = { x - width/2, y - height/2, width, height };
@@ -90,7 +90,7 @@ void Texture::render(int x, int y, SDL_Rect* clip)
     }
     
     //render full texture or texture clip
-    SDL_RenderCopy( renderer, texture, clip, &render_rect);
+    SDL_RenderCopyEx( renderer, texture, clip, &render_rect, angle, center, flip_type);
 }
 
 //free texture

@@ -52,8 +52,13 @@ void Game::menu(Texture& spritesheet)
     pacman_clips[1].y = TILE_HEIGHT*1;
     pacman_clips[1].w = TILE_WIDTH*2;
     pacman_clips[1].h = TILE_HEIGHT*2;
+    //pac-man flippability
+    SDL_RendererFlip flip_type = SDL_FLIP_NONE;
     //big pac-man animation counter
-    int count = 0;
+    int animation = 0;
+    //big pac-man movement
+    int movement = 1;
+    bool moving_right = true;
     
     //tile dimensions for clip rendering
     SDL_Rect clip;
@@ -97,11 +102,30 @@ void Game::menu(Texture& spritesheet)
             //render title
             title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8);
         
-            //render big pac-man animation
-            clip = pacman_clips[count/8];
-            ++count;
-            if (count/8 == 2) count = 0;
-            spritesheet.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT/5)*2, &clip);
+            //render big pac-man
+            clip = pacman_clips[animation/8];
+            ++animation;
+            if (animation/8 == 2) animation = 0;
+            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &clip, 0.0, NULL, flip_type);
+        
+            //change direction if pacman reaches certain x coors
+            if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*4)/5)
+            {
+                moving_right = !moving_right;
+                flip_type = SDL_FLIP_HORIZONTAL;
+            }
+            else if ( WINDOW_WIDTH/2 + movement < (WINDOW_WIDTH*1)/5 )
+            {
+                moving_right = !moving_right;
+                flip_type = SDL_FLIP_NONE;
+            }
+        
+            //if bound right, move right
+            if ( moving_right == true )
+                ++movement;
+            //if bound left, move left
+            else if ( moving_right == false)
+                --movement;
         
             //render PLAY
             play.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*8)/10);
