@@ -24,6 +24,12 @@ private:
     
     //starts menu loop
     void menu(Texture& spritesheet);
+    
+    //starts instruction loop
+    void instructions();
+    
+    //starts maze loop
+    void maze(Texture& texture);
 };
 
 

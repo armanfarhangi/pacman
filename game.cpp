@@ -28,6 +28,12 @@ void Game::start()
         //menu level
         if (level == MENU)
             menu(spritesheet);
+        //instructions level
+        else if (level == INSTRUCTIONS)
+            instructions();
+        //maze level
+        else if (level == MAZE)
+            maze(spritesheet);
     }
 }
 
@@ -39,10 +45,7 @@ void Game::menu(Texture& spritesheet)
     //event storage
     SDL_Event event;
     
-    //window outline
-    SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
-    
-    //big pac-man clips
+    //big pac-man animation clips
     std::vector<SDL_Rect> pacman_clips(2);
     pacman_clips[0].x = TILE_WIDTH*2;
     pacman_clips[0].y = TILE_HEIGHT*1;
@@ -57,14 +60,14 @@ void Game::menu(Texture& spritesheet)
     //big pac-man animation counter
     int animation = 0;
     //big pac-man movement
-    int movement = 1;
+    int movement = 0;
     bool moving_right = true;
     
     //tile dimensions for clip rendering
     SDL_Rect clip;
     clip = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
     
-    //title text
+    //yellow title text
     Texture title;
     SDL_Color color = { 250, 218, 10, 255 };
     title.load_text(big_font, color, "PAC-MAN");
@@ -75,7 +78,14 @@ void Game::menu(Texture& spritesheet)
     Texture instructions;
     instructions.load_text(medium_font, color, "INSTRUCTIONS");
     
-    //while menu is looping
+    //window outline
+    SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+    //button outline
+    SDL_Rect button_outline = { WINDOW_WIDTH/2 - play.get_width()/2 - 14, (WINDOW_HEIGHT*8)/10 - play.get_height()/2 - 10, play.get_width() + 22, play.get_height() + 14 };
+    //button_select
+    bool button_select = true;
+    
+    //menu loop
     while ( quit == false )
     {
         //while there are events in queue
@@ -89,16 +99,58 @@ void Game::menu(Texture& spritesheet)
                 //end game loop
                 level = END;
             }
+            
+            //if event is a non-repeat key press
+            else if ( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
+            {
+                //if event is down or up key
+                if ( event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_UP)
+                {
+                    //if top button, move button outline down
+                    if (button_select == true)
+                    {
+                        button_outline.y += play.get_height() + 20;
+                        button_outline.x -= 103;
+                        button_outline.w += play.get_width() + 100;
+                        button_select = false;
+                    }
+                    //if bottom button, move button outline up
+                    else if (button_select == false)
+                    {
+                        button_outline.y -= play.get_height() + 20;
+                        button_outline.x += 103;
+                        button_outline.w -= play.get_width() + 100;
+                        button_select = true;
+                    }
+                }
+                
+                //if event is enter key
+                else if ( event.key.keysym.sym == SDLK_RETURN )
+                {
+                    //end menu loop
+                    quit = true;
+                    //if top button selected
+                    if (button_select == true )
+                        //change level to maze
+                        level = MAZE;
+                    //if bottom button is selected
+                    if (button_select == false)
+                        //change level to instructions
+                        level = INSTRUCTIONS;
+                }
+            }
         }
         
             //clear screen black
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             
-            //white window outline
+            //render white window outline
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             SDL_RenderDrawRect(renderer, &window_outline);
-            
+            //render button outline
+            SDL_RenderDrawRect(renderer, &button_outline);
+        
             //render title
             title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8);
         
@@ -138,3 +190,147 @@ void Game::menu(Texture& spritesheet)
             SDL_RenderPresent( renderer );
     }
 }
+
+
+//starts instructions loop
+void Game::instructions()
+{
+    //yellow color for instructions text
+    SDL_Color color = { 250, 218, 10, 255 };
+    
+    //create first instruction
+    Texture instruction1;
+    instruction1.load_text(smallest_font, color, "EAT ALL THE PELLETS");
+    //create second instruction
+    Texture instruction2;
+    instruction2.load_text(smallest_font, color, "MOVE WITH UP/DOWN/LEFT/RIGHT KEYS");
+    //create third instruction
+    Texture instruction3;
+    instruction3.load_text(smallest_font, color, "AVOID GHOSTS");
+    //create fourth instruction
+    Texture instruction4;
+    instruction4.load_text(smallest_font, color, "BIG PELLETS LET YOU EAT GHOSTS");
+    //create back button text
+    Texture back;
+    back.load_text(smallest_font, color, "BACK TO MENU");
+    
+    //window outline
+    SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+    //button outline
+    SDL_Rect button_outline = { WINDOW_WIDTH/2 - back.get_width()/2 - 7, (WINDOW_HEIGHT*7)/10 - back.get_height()/2 - 10, back.get_width() + 14, back.get_height() + 14 };
+    
+    //game loop condition
+    bool quit = false;
+    //stores event information
+    SDL_Event event;
+    
+    //game loop
+    while (quit == false)
+    {
+        //event loop (while there are events in queue)
+        while ( SDL_PollEvent(&event) != 0 )
+        {
+            //if quit event
+            if (event.type == SDL_QUIT)
+            {
+                //end instructions loop
+                quit = true;
+                //end main loop
+                level = END;
+            }
+            
+            //if key press event that's not a repeat
+            else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
+                //if enter key
+                if ( event.key.keysym.sym == SDLK_RETURN)
+                {
+                    //end instructions loop
+                    quit = true;
+                    //change level to title screen
+                    level = MENU;
+                }
+        }
+        
+        //clear window black
+        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+        SDL_RenderClear(renderer);
+        
+        //set color to light pink
+        SDL_SetRenderDrawColor( renderer, 219, 112, 147, 255 );
+        
+        //render instructions
+        instruction1.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*2)/10);
+        instruction2.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*3)/10);
+        instruction3.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*4)/10);
+        instruction4.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*5)/10);
+        //render back button
+        back.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*7)/10);
+        
+        //set color to white for outlines
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        //render back button outline
+        SDL_RenderDrawRect(renderer, &button_outline);
+        //render window outline
+        SDL_RenderDrawRect(renderer, &window_outline);
+        
+        //update window with new renders
+        SDL_RenderPresent( renderer );
+    }
+}
+
+//starts maze loop
+void Game::maze(Texture& texture)
+{
+    //game loop condition
+    bool quit = false;
+    //stores event information
+    SDL_Event event;
+    
+    //load maze image
+    Texture maze;
+    maze.load_image("maze.png");
+    
+    //window outline
+    SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+    
+    //game loop
+    while (quit == false)
+    {
+        //event loop (while there are events in queue)
+        while ( SDL_PollEvent(&event) != 0 )
+        {
+            //if quit event
+            if (event.type == SDL_QUIT)
+            {
+                //end instructions loop
+                quit = true;
+                //end main loop
+                level = END;
+            }
+            
+            //if key press event that's not a repeat
+            else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
+                //if enter key
+                if ( event.key.keysym.sym == SDLK_RIGHT )
+                {
+
+                }
+        }
+        
+        //clear window black
+        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+        SDL_RenderClear(renderer);
+        
+        //render maze
+        maze.render();
+        
+        //render white window outline
+        SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+        SDL_RenderDrawRect( renderer, &window_outline );
+        
+        //update window with new renders
+        SDL_RenderPresent( renderer );
+    }
+}
+
+

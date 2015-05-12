@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <string>
+#include "globals.h"
 
 //contains a texture and its dimensions
 class Texture
@@ -25,7 +26,7 @@ public:
     void load_text(TTF_Font* font, SDL_Color color, std::string text);
     
     //renders to window
-    void render(int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip_type = SDL_FLIP_NONE);
+    void render(int x = WINDOW_WIDTH/2, int y = WINDOW_HEIGHT/2, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip_type = SDL_FLIP_NONE);
     
     //frees texture
     ~Texture();

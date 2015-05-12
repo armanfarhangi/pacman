@@ -29,6 +29,6 @@ extern TTF_Font* small_font;
 extern TTF_Font* smallest_font;
 
 //level enumerations
-enum Level { MENU, MAZE, GAME_OVER, END };
+enum Level { MENU, MAZE, INSTRUCTIONS, END };
 
 #endif
