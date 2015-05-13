@@ -306,7 +306,7 @@ void Game::maze(Texture& texture)
         //by 16 tiles (y)
         for (int j = 0; j < 16; ++j)
         {
-            //different clips for later rendering
+            //creating 14*16 32*31 clips for the maze image to render
             clip = { TILE_WIDTH*i, TILE_HEIGHT*j, TILE_WIDTH, TILE_HEIGHT };
             tiles[i].push_back(clip);
         }
@@ -346,10 +346,10 @@ void Game::maze(Texture& texture)
         //render maze layers
         //bottom layer (empty)
         maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &bottom_maze);
-        //top layer (filled with pellets)
+        //top layer tiles (filled with pellets)
         for (int i = 0; i < tiles.size(); ++i)
             for (int j = 0; j < 16; ++j)
-                    maze.render( (TILE_WIDTH*i)/2, (TILE_HEIGHT*j)/2, &tiles[i][j] );
+                    maze.render( (TILE_WIDTH/2) + (TILE_WIDTH*i), (TILE_HEIGHT/2) + (TILE_HEIGHT*j), &tiles[i][j] );
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
