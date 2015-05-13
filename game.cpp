@@ -289,6 +289,9 @@ void Game::maze(Texture& texture)
     //load maze image
     Texture maze;
     maze.load_image("maze.png");
+    //maze clips
+    SDL_Rect pellet_maze = { 0, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
+    SDL_Rect empty_maze = { WINDOW_WIDTH, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
     
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
@@ -321,8 +324,9 @@ void Game::maze(Texture& texture)
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_RenderClear(renderer);
         
-        //render maze
-        maze.render();
+        //render maze layers
+        maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &empty_maze);
+        maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &pellet_maze);
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
