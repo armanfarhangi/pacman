@@ -100,5 +100,12 @@ void Texture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* cent
 //free texture
 Texture::~Texture()
 {
-    SDL_DestroyTexture(texture);
+    //if there is a texture
+    if (texture != NULL)
+    {
+        //free texture
+        SDL_DestroyTexture(texture);
+        width = 0;
+        height = 0;
+    }
 }

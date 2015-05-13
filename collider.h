@@ -15,6 +15,9 @@
 class Collider
 {
 public:
+    //constructor
+    Collider();
+    
     //coordinate accessors
     int get_x();
     int get_y();

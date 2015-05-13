@@ -33,4 +33,7 @@ extern TTF_Font* smallest_font;
 //level enumerations
 enum Level { MENU, MAZE, INSTRUCTIONS, END };
 
+//obstacle state enumerations
+enum Obstacle_State { NOT_OBSTACLE, OBSTACLE };
+
 #endif

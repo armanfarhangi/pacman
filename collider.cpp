@@ -7,6 +7,11 @@
 #include "collider.h"
 
 /******* COLLIDER CLASS DEFS *******/
+//constructor
+Collider::Collider()
+{
+    hitbox = { 0, 0, 0, 0 };
+}
 
 //get x coordinate
 int Collider::get_x()
