@@ -37,6 +37,9 @@ private:
     
     //moving animation clips
     std::vector<SDL_Rect> moving_right;
+    std::vector<SDL_Rect> moving_left;
+    std::vector<SDL_Rect> moving_up;
+    std::vector<SDL_Rect> moving_down;
     //animation counter
     int animation;
 };
