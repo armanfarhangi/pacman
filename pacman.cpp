@@ -44,6 +44,9 @@ Pacman::Pacman(Texture& spritesheet)
     //default velocity
     x_vel = 0;
     y_vel = 0;
+    
+    //initialize hitbox (3/4 of tile)
+    hitbox = { x_pos*2, y_pos*2, (TILE_WIDTH/4)*3, (TILE_HEIGHT/4)*3 };
 }
 
 //render pacman depending on animation state
