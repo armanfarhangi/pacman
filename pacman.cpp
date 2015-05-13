@@ -39,7 +39,11 @@ Pacman::Pacman(Texture& spritesheet)
     
     //default position
     x_pos = WINDOW_WIDTH/2;
-    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - 12; //-12; pacman tiles not fully aligned -_-
+    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - 12; //-12; pacman tiles not fully aligned
+    
+    //default velocity
+    x_vel = 0;
+    y_vel = 0;
 }
 
 //render pacman depending on animation state
@@ -48,6 +52,7 @@ void Pacman::render()
     //if moving right
     if (animation_state == MOVING_RIGHT)
     {
+        //moving right animation
         spritesheet.render(x_pos, y_pos, &moving_right[animation/10]);
         ++animation;
         if (animation/10 == 2) animation = 0;
@@ -56,6 +61,7 @@ void Pacman::render()
     //if moving left
     if (animation_state == MOVING_LEFT)
     {
+        //moving left animation
         spritesheet.render(x_pos, y_pos, &moving_left[animation/10]);
         ++animation;
         if (animation/10 == 2) animation = 0;
@@ -64,6 +70,7 @@ void Pacman::render()
     //if moving up
     if (animation_state == MOVING_UP)
     {
+        //moving up animation
         spritesheet.render(x_pos, y_pos, &moving_up[animation/10]);
         ++animation;
         if (animation/10 == 2) animation = 0;
@@ -72,6 +79,7 @@ void Pacman::render()
     //if moving down
     if (animation_state == MOVING_DOWN)
     {
+        //moving down animation
         spritesheet.render(x_pos, y_pos, &moving_down[animation/10]);
         ++animation;
         if (animation/10 == 2) animation = 0;

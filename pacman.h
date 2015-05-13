@@ -21,6 +21,9 @@ public:
     //constructor
     Pacman(Texture& spritesheet);
     
+    //handle events
+    void handle(SDL_Event e);
+    
     //render pacman
     void render();
     
@@ -31,6 +34,10 @@ private:
     //current position
     int x_pos;
     int y_pos;
+    
+    //current velocity
+    int x_vel;
+    int y_vel;
     
     //determines what animation to render
     int animation_state;
