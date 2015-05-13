@@ -28,7 +28,7 @@ Pacman::Pacman(Texture& spritesheet)
     
     //default position
     x_pos = WINDOW_WIDTH/2;
-    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - 10; //-10; pacman tiles not fully aligned -_-
+    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - 12; //-12; pacman tiles not fully aligned -_-
 }
 
 //render pacman depending on animation state
