@@ -33,7 +33,7 @@ private:
     void instructions();
     
     //starts maze loop
-    void maze(Texture& texture);
+    void maze(Texture& spritesheet);
 };
 
 

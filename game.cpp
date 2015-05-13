@@ -10,6 +10,7 @@
 #include "texture.h"
 #include "game.h"
 #include "globals.h"
+#include "pacman.h"
 
 
 
@@ -53,14 +54,8 @@ void Game::menu(Texture& spritesheet)
     
     //big pac-man animation clips
     std::vector<SDL_Rect> pacman_clips(2);
-    pacman_clips[0].x = TILE_WIDTH*2;
-    pacman_clips[0].y = TILE_HEIGHT*1;
-    pacman_clips[0].w = TILE_WIDTH*2;
-    pacman_clips[0].h = TILE_HEIGHT*2;
-    pacman_clips[1].x = TILE_WIDTH*4;
-    pacman_clips[1].y = TILE_HEIGHT*1;
-    pacman_clips[1].w = TILE_WIDTH*2;
-    pacman_clips[1].h = TILE_HEIGHT*2;
+    pacman_clips[0] = { TILE_WIDTH*2, TILE_HEIGHT*1, TILE_WIDTH*2, TILE_HEIGHT*2 };
+    pacman_clips[1] = { TILE_WIDTH*4, TILE_HEIGHT*1, TILE_WIDTH*2, TILE_HEIGHT*2 };
     //pac-man flippability
     SDL_RendererFlip flip_type = SDL_FLIP_NONE;
     //big pac-man animation counter
@@ -285,28 +280,30 @@ void Game::instructions()
 }
 
 //starts maze loop
-void Game::maze(Texture& texture)
+void Game::maze(Texture& spritesheet)
 {
     //game loop condition
     bool quit = false;
     //stores event information
     SDL_Event event;
     
+    //create pacman object
+    Pacman pacman(spritesheet);
+    
     //load maze image
     Texture maze;
     maze.load_image("maze.png");
     //bottom layer maze clip
     SDL_Rect bottom_maze = { WINDOW_WIDTH, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
-    //top maze tiler
+    //top layer maze tiler
     std::vector<std::vector<SDL_Rect>> tiles(14);
     SDL_Rect clip;
-    //14 tiles (x)
+    //14 by 16 2D vector
     for (int i = 0; i < tiles.size(); ++i)
     {
-        //by 16 tiles (y)
         for (int j = 0; j < 16; ++j)
         {
-            //creating 14*16 32*31 clips for the maze image to render
+            //creating 14*16 32*31 clips for the maze image to render in tiles
             clip = { TILE_WIDTH*i, TILE_HEIGHT*j, TILE_WIDTH, TILE_HEIGHT };
             tiles[i].push_back(clip);
         }
@@ -343,19 +340,21 @@ void Game::maze(Texture& texture)
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_RenderClear(renderer);
         
-        //render maze layers
-        //bottom layer (empty)
+        //render bottom layer maze (empty)
         maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &bottom_maze);
-        //top layer tiles (filled with pellets)
+        //render top layer maze tiles (filled with pellets)
         for (int i = 0; i < tiles.size(); ++i)
             for (int j = 0; j < 16; ++j)
                     maze.render( (TILE_WIDTH/2) + (TILE_WIDTH*i), (TILE_HEIGHT/2) + (TILE_HEIGHT*j), &tiles[i][j] );
+        
+        //render pacman
+        pacman.render();
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
         SDL_RenderDrawRect( renderer, &window_outline );
         
-        //update window with new renders
+        //update window with queued renders
         SDL_RenderPresent( renderer );
     }
 }

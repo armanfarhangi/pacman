@@ -36,4 +36,7 @@ enum Level { MENU, MAZE, INSTRUCTIONS, END };
 //obstacle state enumerations
 enum Obstacle_State { NOT_OBSTACLE, OBSTACLE };
 
+//pacman animation state enumerations
+enum Animation_State { MOVING_RIGHT, DYING };
+
 #endif
