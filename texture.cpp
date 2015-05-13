@@ -34,7 +34,7 @@ void Texture::load_image(std::string path)
         printf( "Couldn't load text surface.  Error: %s\n", IMG_GetError() );
     else
     {
-        //make pacman spritesheet background pixels transparent
+        //make pacman spritesheet black background pixels transparent
         SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0, 0) );
         
         //create texture from surface
