@@ -18,11 +18,17 @@
 class Pacman : public Collider
 {
 public:
+    //constants
+    const static int PACMAN_SPEED = 1;
+    
     //constructor
     Pacman(Texture& spritesheet);
     
     //handle events
     void handle(SDL_Event e);
+    
+    //move pacman
+    void move();
     
     //render pacman
     void render();

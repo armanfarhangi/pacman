@@ -27,12 +27,12 @@ Pacman::Pacman(Texture& spritesheet)
     moving_left[1] = { TILE_WIDTH*1, TILE_HEIGHT*1, TILE_WIDTH, TILE_HEIGHT };
     //setup moving up animation clips
     moving_up.resize(2);
-    moving_up[0] = { TILE_WIDTH*0, TILE_HEIGHT*1, TILE_WIDTH, TILE_HEIGHT };
-    moving_up[1] = { TILE_WIDTH*2, TILE_HEIGHT*2, TILE_WIDTH, TILE_HEIGHT };
+    moving_up[0] = { TILE_WIDTH*0, TILE_HEIGHT*2, TILE_WIDTH, TILE_HEIGHT };
+    moving_up[1] = { TILE_WIDTH*1, TILE_HEIGHT*2, TILE_WIDTH, TILE_HEIGHT };
     //setup moving down animation clips
-    moving_up.resize(2);
-    moving_up[0] = { TILE_WIDTH*0, TILE_HEIGHT*1, TILE_WIDTH, TILE_HEIGHT };
-    moving_up[1] = { TILE_WIDTH*3, TILE_HEIGHT*3, TILE_WIDTH, TILE_HEIGHT };
+    moving_down.resize(2);
+    moving_down[0] = { TILE_WIDTH*0, TILE_HEIGHT*3, TILE_WIDTH, TILE_HEIGHT };
+    moving_down[1] = { TILE_WIDTH*1, TILE_HEIGHT*3, TILE_WIDTH, TILE_HEIGHT };
     
     //initialize animation counter
     animation = 0;
@@ -58,7 +58,8 @@ void Pacman::render()
         //moving right animation
         spritesheet.render(x_pos, y_pos, &moving_right[animation/10]);
         ++animation;
-        if (animation/10 == 2) animation = 0;
+        if (animation/10 == 2)
+            animation = 0;
     }
     
     //if moving left
@@ -67,7 +68,8 @@ void Pacman::render()
         //moving left animation
         spritesheet.render(x_pos, y_pos, &moving_left[animation/10]);
         ++animation;
-        if (animation/10 == 2) animation = 0;
+        if (animation/10 == 2)
+            animation = 0;
     }
     
     //if moving up
@@ -76,7 +78,8 @@ void Pacman::render()
         //moving up animation
         spritesheet.render(x_pos, y_pos, &moving_up[animation/10]);
         ++animation;
-        if (animation/10 == 2) animation = 0;
+        if (animation/10 == 2)
+            animation = 0;
     }
     
     //if moving down
@@ -85,6 +88,85 @@ void Pacman::render()
         //moving down animation
         spritesheet.render(x_pos, y_pos, &moving_down[animation/10]);
         ++animation;
-        if (animation/10 == 2) animation = 0;
+        if (animation/10 == 2)
+            animation = 0;
     }
 }
+
+
+//handle events for pacman velocity
+void Pacman::handle(SDL_Event e)
+{
+    //if key press event that's not a repeat
+    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    {
+        //if right key
+        if ( e.key.keysym.sym == SDLK_RIGHT )
+        {
+            //gear pacman right
+            x_vel += PACMAN_SPEED;
+            animation_state = MOVING_RIGHT;
+        }
+        //if left key
+        else if ( e.key.keysym.sym == SDLK_LEFT )
+        {
+            //gear pacman left
+            x_vel -= PACMAN_SPEED;
+            animation_state = MOVING_LEFT;
+        }
+        //if up key
+        else if ( e.key.keysym.sym == SDLK_UP )
+        {
+            //gear pacman up
+            y_vel -= PACMAN_SPEED;
+            animation_state = MOVING_UP;
+        }
+        //if down key
+        else if ( e.key.keysym.sym == SDLK_DOWN )
+        {
+            //gear pacman down
+            y_vel += PACMAN_SPEED;
+            animation_state = MOVING_DOWN;
+        }
+    }
+    
+    //if key release event that's not a repeat
+    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+    {
+        //if right key
+        if ( e.key.keysym.sym == SDLK_RIGHT )
+        {
+            //halt x movement
+            x_vel -= PACMAN_SPEED;
+        }
+        //if left key
+        if ( e.key.keysym.sym == SDLK_LEFT )
+        {
+            //halt x movement
+            x_vel += PACMAN_SPEED;
+        }
+        //if up key
+        if ( e.key.keysym.sym == SDLK_UP )
+        {
+            //halt y movement
+            y_vel += PACMAN_SPEED;
+        }
+        //if down key
+        if ( e.key.keysym.sym == SDLK_DOWN )
+        {
+            //halt y movement
+            y_vel -= PACMAN_SPEED;
+        }
+    }
+}
+
+
+//move pacman after handling events
+void Pacman::move()
+{
+    //change position based on velocity
+    x_pos += x_vel;
+    y_pos += y_vel;
+}
+
+

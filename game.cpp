@@ -326,15 +326,17 @@ void Game::maze(Texture& spritesheet)
                 //end main loop
                 level = END;
             }
-            
-            //if key press event that's not a repeat
-            else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
-                //if enter key
-                if ( event.key.keysym.sym == SDLK_RIGHT )
-                {
-
-                }
+        
+            //handle event for pacman velocity
+            pacman.handle(event);
         }
+        
+        
+        //move pacman
+        pacman.move();
+        
+        
+        
         
         //clear window black
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
