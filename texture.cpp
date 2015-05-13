@@ -34,9 +34,8 @@ void Texture::load_image(std::string path)
         printf( "Couldn't load text surface.  Error: %s\n", IMG_GetError() );
     else
     {
-        //grab dimensions from surface
-        width = surface->w;
-        height = surface->h;
+        //make pacman spritesheet background pixels transparent
+        SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0, 0) );
         
         //create texture from surface
         texture = SDL_CreateTextureFromSurface( renderer, surface);
@@ -44,6 +43,13 @@ void Texture::load_image(std::string path)
         //error check
         if ( texture == NULL )
             printf( "Couldn't create texture from surface. Error: %s\n", IMG_GetError() );
+        
+        else
+        {
+            //grab dimensions from surface
+            width = surface->w;
+            height = surface->h;
+        }
     }
     
     //free unneeded surface
@@ -62,16 +68,19 @@ void Texture::load_text(TTF_Font* font, SDL_Color color, std::string text)
     
     else
     {
-        //grab dimensions from surface
-        width = surface->w;
-        height = surface->h;
-        
         //create texture from surface
         texture = SDL_CreateTextureFromSurface( renderer, surface );
         
         //error check
         if ( texture == NULL )
             printf( "Couldn't create texture out of surface. Error: %s\n", SDL_GetError() );
+        
+        else
+        {
+            //grab dimensions from surface
+            width = surface->w;
+            height = surface->h;
+        }
     }
     
     //free unneeded surface
