@@ -295,9 +295,22 @@ void Game::maze(Texture& texture)
     //load maze image
     Texture maze;
     maze.load_image("maze.png");
-    //maze clips
-    SDL_Rect pellet_maze = { 0, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
-    SDL_Rect empty_maze = { WINDOW_WIDTH, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
+    //bottom layer maze clip
+    SDL_Rect bottom_maze = { WINDOW_WIDTH, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
+    //top maze tiler
+    std::vector<std::vector<SDL_Rect>> tiles(14);
+    SDL_Rect clip;
+    //14 tiles (x)
+    for (int i = 0; i < tiles.size(); ++i)
+    {
+        //by 16 tiles (y)
+        for (int j = 0; j < 16; ++j)
+        {
+            //different clips for later rendering
+            clip = { TILE_WIDTH*i, TILE_HEIGHT*j, TILE_WIDTH, TILE_HEIGHT };
+            tiles[i].push_back(clip);
+        }
+    }
     
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
@@ -331,8 +344,12 @@ void Game::maze(Texture& texture)
         SDL_RenderClear(renderer);
         
         //render maze layers
-        maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &empty_maze);
-        maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &pellet_maze);
+        //bottom layer (empty)
+        maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &bottom_maze);
+        //top layer (filled with pellets)
+        for (int i = 0; i < tiles.size(); ++i)
+            for (int j = 0; j < 16; ++j)
+                    maze.render( (TILE_WIDTH*i)/2, (TILE_HEIGHT*j)/2, &tiles[i][j] );
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
