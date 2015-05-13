@@ -4,11 +4,12 @@
 //C++ and SDL
 
 //libraries
-#include "functions.h"
 #include <stdio.h>
+//headers
+#include "functions.h"
 #include "game.h"
 
-//main function
+/******* MAIN FUNCTION *******/
 int main( int arg, char* args[] )
 {
     //setup required systems
@@ -22,7 +23,7 @@ int main( int arg, char* args[] )
     }
     
     //close systems and cleanup
-    close();
+    shutdown();
     
     return 0;
 }

@@ -10,7 +10,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <string>
+//headers
 #include "globals.h"
+
+
+
+/******* TEXTURE CLASS DECLARES *******/
 
 //contains a texture and its dimensions
 class Texture

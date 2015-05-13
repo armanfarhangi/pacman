@@ -4,12 +4,15 @@
 //C++ and SDL
 
 //libraries
-#include "functions.h"
-#include "globals.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <stdio.h>
+//headers
+#include "functions.h"
+#include "globals.h"
+
+
 
 //initialize external global objects
 SDL_Window* window = NULL;
@@ -19,6 +22,8 @@ TTF_Font* medium_font = NULL;
 TTF_Font* small_font = NULL;
 TTF_Font* smallest_font = NULL;
 
+
+/******* SETUP AND SHUTDOWN DEFS *******/
 
 //setup SDL, window, renderer, SDL font, and SDL image
 bool setup()
@@ -125,7 +130,7 @@ bool setup()
 
 
 //destroy window, renderer, and quit SDL
-void close()
+void shutdown()
 {
     //free window
     SDL_DestroyWindow( window );

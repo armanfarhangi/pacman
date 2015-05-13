@@ -4,12 +4,16 @@
 //C++ and SDL
 
 //libraries
-#include "texture.h"
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
-#include "globals.h"
-#include <stdio.h>
 #include <SDL2_image/SDL_image.h>
+#include <stdio.h>
+//headers
+#include "texture.h"
+#include "globals.h"
+
+
+/******* TEXTURE CLASS DEFS *******/
 
 //constructor
 Texture::Texture()

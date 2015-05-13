@@ -3,11 +3,17 @@
 //PAC-MAN Game
 //C++ and SDL
 
+//libraries
+#include <SDL2/SDL.h>
+#include <vector>
+//headers
+#include "texture.h"
 #include "game.h"
 #include "globals.h"
-#include <SDL2/SDL.h>
-#include "texture.h"
-#include <vector>
+
+
+
+/******* GAME CLASS DEFS *******/
 
 //constructor starts level at menu
 Game::Game()

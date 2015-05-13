@@ -10,6 +10,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 
+/******* GLOBAL OBJECTS, CONSTANTS, ENUMERATIONS *******/
+
 //window
 extern SDL_Window* window;
 const int WINDOW_WIDTH = 453;

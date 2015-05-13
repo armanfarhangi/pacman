@@ -6,7 +6,11 @@
 #ifndef pacman_Game_h
 #define pacman_Game_h
 
+//headers
 #include "texture.h"
+
+
+/******* GAME CLASS DECLARES *******/
 
 //pac-man game
 class Game
