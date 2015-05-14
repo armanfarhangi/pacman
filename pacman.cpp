@@ -104,58 +104,33 @@ void Pacman::handle(SDL_Event e)
         if ( e.key.keysym.sym == SDLK_RIGHT )
         {
             //gear pacman right
-            x_vel += PACMAN_SPEED;
+            x_vel = PACMAN_SPEED;
+            y_vel = 0;
             animation_state = MOVING_RIGHT;
         }
         //if left key
         else if ( e.key.keysym.sym == SDLK_LEFT )
         {
             //gear pacman left
-            x_vel -= PACMAN_SPEED;
+            x_vel = -PACMAN_SPEED;
+            y_vel = 0;
             animation_state = MOVING_LEFT;
         }
         //if up key
         else if ( e.key.keysym.sym == SDLK_UP )
         {
             //gear pacman up
-            y_vel -= PACMAN_SPEED;
+            y_vel = -PACMAN_SPEED;
+            x_vel = 0;
             animation_state = MOVING_UP;
         }
         //if down key
         else if ( e.key.keysym.sym == SDLK_DOWN )
         {
             //gear pacman down
-            y_vel += PACMAN_SPEED;
+            y_vel = PACMAN_SPEED;
+            x_vel = 0;
             animation_state = MOVING_DOWN;
-        }
-    }
-    
-    //if key release event that's not a repeat
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-    {
-        //if right key
-        if ( e.key.keysym.sym == SDLK_RIGHT )
-        {
-            //halt x movement
-            x_vel -= PACMAN_SPEED;
-        }
-        //if left key
-        if ( e.key.keysym.sym == SDLK_LEFT )
-        {
-            //halt x movement
-            x_vel += PACMAN_SPEED;
-        }
-        //if up key
-        if ( e.key.keysym.sym == SDLK_UP )
-        {
-            //halt y movement
-            y_vel += PACMAN_SPEED;
-        }
-        //if down key
-        if ( e.key.keysym.sym == SDLK_DOWN )
-        {
-            //halt y movement
-            y_vel -= PACMAN_SPEED;
         }
     }
 }

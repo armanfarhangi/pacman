@@ -155,7 +155,7 @@ void Game::menu(Texture& spritesheet)
         }
         
             //clear screen black
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
             SDL_RenderClear(renderer);
             
             //render white window outline
