@@ -38,15 +38,15 @@ Pacman::Pacman(Texture& spritesheet)
     animation = 0;
     
     //default position
-    x_pos = (TILE_WIDTH/2) + (TILE_WIDTH*7);
-    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12);
+    x_pos = WINDOW_WIDTH/2;
+    y_pos = WINDOW_HEIGHT/2;
     
     //default velocity
     x_vel = 0;
     y_vel = 0;
     
     //initialize hitbox (3/4 of tile)
-    hitbox = { x_pos, y_pos, (TILE_WIDTH/4)*3, (TILE_HEIGHT/4)*3 };
+    hitbox = { x_pos + (TILE_WIDTH/4)*3, y_pos + (TILE_HEIGHT/4)*3, (TILE_WIDTH/4)*3, (TILE_HEIGHT/4)*3 };
     
     //set 2D vector that represents desired obstacles on map
     obstacles.resize(14);

@@ -88,18 +88,29 @@ void Texture::load_text(TTF_Font* font, SDL_Color color, std::string text)
 }
 
 //render texture or texture clip to window
-void Texture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip_type)
+void Texture::render(int x, int y, SDL_Rect* clip, int centered, double angle, SDL_Point* center, SDL_RendererFlip flip_type)
 {
-    //point and dimensions for full texture to be rendered
-    SDL_Rect render_rect = { x - width/2, y - height/2, width, height };
+    //render target
+    SDL_Rect render_rect;
     
+    //if texture to be rendered with x, y as midpoint
+    if (centered == CENTERED)
+        render_rect = { x - width/2, y - height/2, width, height };
+    
+    //if texture to be rendered with x,y as top left point
+    else if (centered == NOT_CENTERED)
+        render_rect = { x, y, width, height };
+
     //if clipping, adjust render rectangle
     if (clip != NULL)
     {
-        render_rect.x = x - clip->w/2;
-        render_rect.y = y - clip->h/2;
-        render_rect.w = clip->w;
-        render_rect.h = clip->h;
+        //if texture to be rendered with x, y as midpoint
+        if (centered == CENTERED)
+            render_rect = { x - clip->w/2, y - clip->h/2, clip->w, clip->h };
+        
+        //if texture to be rendered with x,y as top left point
+        else if (centered == NOT_CENTERED)
+            render_rect = { x, y, clip->w, clip->h };
     }
     
     //render full texture or texture clip

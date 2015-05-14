@@ -165,13 +165,13 @@ void Game::menu(Texture& spritesheet)
             SDL_RenderDrawRect(renderer, &button_outline);
         
             //render title
-            title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8);
+            title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8, NULL, CENTERED);
         
             //render big pac-man
             clip = pacman_clips[animation/8];
             ++animation;
             if (animation/8 == 2) animation = 0;
-            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &clip, 0.0, NULL, flip_type);
+            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &clip, CENTERED, 0.0, NULL, flip_type);
         
             //if pacman moves too far right
             if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*7)/10)
@@ -196,9 +196,9 @@ void Game::menu(Texture& spritesheet)
                 --movement;
         
             //render PLAY
-            play.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*8)/10);
+            play.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*8)/10, NULL, CENTERED);
             //render INSTRUCTIONS
-            instructions.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*9)/10);
+            instructions.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*9)/10, NULL, CENTERED);
         
 
         
@@ -309,7 +309,7 @@ void Game::maze(Texture& spritesheet)
     Texture maze;
     maze.load_image("maze.png");
     //bottom layer maze clip
-    SDL_Rect bottom_maze = { 448, 0 , 448, 496 };
+    SDL_Rect bottom_maze = { 448, 0 , 448, 491 };
     //top layer maze tiler
     std::vector<std::vector<SDL_Rect>> tiles(14);
     SDL_Rect clip;
@@ -362,7 +362,7 @@ void Game::maze(Texture& spritesheet)
         //render top layer maze tiles (filled with pellets)
         for (int i = 0; i < tiles.size(); ++i)
             for (int j = 0; j < 16; ++j)
-                    maze.render( (TILE_WIDTH/2)*2 + (TILE_WIDTH*i), (TILE_HEIGHT/2)*2 + (TILE_HEIGHT*j), &tiles[i][j] );
+                    maze.render( TILE_WIDTH*i, TILE_HEIGHT*j, &tiles[i][j], NOT_CENTERED );
         
         //render pacman
         pacman.render();
