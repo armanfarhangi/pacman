@@ -55,6 +55,9 @@ private:
     std::vector<SDL_Rect> moving_down;
     //animation counter
     int animation;
+    
+    //maze obstacles
+    std::vector<std::vector<bool>> obstacles;
 };
 
 

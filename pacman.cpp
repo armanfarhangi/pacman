@@ -39,14 +39,22 @@ Pacman::Pacman(Texture& spritesheet)
     
     //default position
     x_pos = WINDOW_WIDTH/2;
-    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - 12; //-12; pacman tiles not fully aligned
+    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - WALL_WIDTH;
     
     //default velocity
     x_vel = 0;
     y_vel = 0;
     
     //initialize hitbox (3/4 of tile)
-    hitbox = { x_pos*2, y_pos*2, (TILE_WIDTH/4)*3, (TILE_HEIGHT/4)*3 };
+    hitbox = { x_pos, y_pos, (TILE_WIDTH/4)*3, (TILE_HEIGHT/4)*3 };
+    
+    //set 2D vector that represents desired obstacles on map
+    obstacles.resize(14);
+    for (int i = 0; i < obstacles.size(); ++i)
+        obstacles[i].resize(15);
+    //0 represents non-obstacle tile, 1 represents obstacle tile
+    obstacles[0] = { 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0 };
+    obstacles[1] = { 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0 };
 }
 
 //render pacman depending on animation state
