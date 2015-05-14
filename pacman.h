@@ -40,6 +40,8 @@ private:
     //current position
     int x_pos;
     int y_pos;
+    int x_tile;
+    int y_tile;
     
     //current velocity
     int x_vel;
