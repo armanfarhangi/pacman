@@ -14,15 +14,15 @@
 
 //window
 extern SDL_Window* window;
-const int WINDOW_WIDTH = 448;
-const int WINDOW_HEIGHT = 491;
-
-//pacman clip dimensions
-const int PACMAN_WIDTH = 32;
-const int PACMAN_HEIGHT = 32;
+const int WINDOW_WIDTH = 384;
+const int WINDOW_HEIGHT = 512;
 
 //renderer
 extern SDL_Renderer* renderer;
+
+//pacman clip dimensions
+const int TILE_WIDTH = 16;
+const int TILE_HEIGHT = 16;
 
 //fonts
 extern TTF_Font* big_font;

@@ -88,7 +88,7 @@ bool setup()
                     big_font = TTF_OpenFont( "PressStart2P.ttf", 60 );
                     medium_font = TTF_OpenFont( "PressStart2P.ttf", 28 );
                     small_font = TTF_OpenFont( "PressStart2P.ttf", 18 );
-                    smallest_font = TTF_OpenFont( "PressStart2P.ttf", 13);
+                    smallest_font = TTF_OpenFont( "PressStart2P.ttf", 11);
                     
                     //error check
                     if (big_font == NULL)

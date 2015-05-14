@@ -31,7 +31,7 @@ public:
     void load_text(TTF_Font* font, SDL_Color color, std::string text);
     
     //renders to window
-    void render(int x = WINDOW_WIDTH/2, int y = WINDOW_HEIGHT/2, SDL_Rect* clip = NULL, int centered = CENTERED, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip_type = SDL_FLIP_NONE);
+    void render(int x = WINDOW_WIDTH/2, int y = WINDOW_HEIGHT/2, SDL_Rect* clip = NULL, int scaled = 1, int centered = CENTERED, double rotation = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip_type = SDL_FLIP_NONE);
     
     //frees texture
     ~Texture();

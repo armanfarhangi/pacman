@@ -26,14 +26,17 @@ private:
     //determines level to loop
     int level;
     
+    //spritesheet for boxman, ghosts, and tiles
+    Texture spritesheet;
+    
     //starts menu loop
-    void menu(Texture& spritesheet);
+    void menu();
     
     //starts instruction loop
     void instructions();
     
     //starts maze loop
-    void maze(Texture& spritesheet);
+    void maze();
 };
 
 
