@@ -309,7 +309,7 @@ void Game::maze(Texture& spritesheet)
     Texture maze;
     maze.load_image("maze.png");
     //bottom layer maze clip
-    SDL_Rect bottom_maze = { WINDOW_WIDTH, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
+    SDL_Rect bottom_maze = { 448, 0 , 448, 496 };
     //top layer maze tiler
     std::vector<std::vector<SDL_Rect>> tiles(14);
     SDL_Rect clip;
@@ -362,7 +362,7 @@ void Game::maze(Texture& spritesheet)
         //render top layer maze tiles (filled with pellets)
         for (int i = 0; i < tiles.size(); ++i)
             for (int j = 0; j < 16; ++j)
-                    maze.render( (TILE_WIDTH/2) + (TILE_WIDTH*i), (TILE_HEIGHT/2) + (TILE_HEIGHT*j), &tiles[i][j] );
+                    maze.render( 0, 0, &tiles[i][j] );
         
         //render pacman
         pacman.render();

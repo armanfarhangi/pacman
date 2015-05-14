@@ -38,8 +38,8 @@ Pacman::Pacman(Texture& spritesheet)
     animation = 0;
     
     //default position
-    x_pos = WINDOW_WIDTH/2;
-    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12) - WALL_WIDTH;
+    x_pos = (TILE_WIDTH/2) + (TILE_WIDTH*7);
+    y_pos = (TILE_HEIGHT/2) + (TILE_HEIGHT*12);
     
     //default velocity
     x_vel = 0;

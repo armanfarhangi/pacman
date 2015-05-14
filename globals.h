@@ -12,14 +12,14 @@
 
 /******* GLOBAL OBJECTS, CONSTANTS, ENUMERATIONS *******/
 
-//window
-extern SDL_Window* window;
-const int WINDOW_WIDTH = 448;
-const int WINDOW_HEIGHT = 496;
-
-//tile dimensions
+//map tile dimensions
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 31;
+
+//window
+extern SDL_Window* window;
+const int WINDOW_WIDTH = 448 + TILE_WIDTH;
+const int WINDOW_HEIGHT = 496 + TILE_HEIGHT;
 
 //renderer
 extern SDL_Renderer* renderer;
@@ -38,8 +38,5 @@ enum Obstacle_State { NOT_OBSTACLE, OBSTACLE };
 
 //pacman animation state enumerations
 enum Animation_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING };
-
-//width of map edge walls
-const int WALL_WIDTH = 15;
 
 #endif
