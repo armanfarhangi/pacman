@@ -10,7 +10,6 @@
 #include "texture.h"
 #include "game.h"
 #include "globals.h"
-#include "pacman.h"
 
 
 
@@ -54,8 +53,8 @@ void Game::menu(Texture& spritesheet)
     
     //big pac-man animation clips
     std::vector<SDL_Rect> pacman_clips(2);
-    pacman_clips[0] = { TILE_WIDTH*2, TILE_HEIGHT*1, TILE_WIDTH*2, TILE_HEIGHT*2 };
-    pacman_clips[1] = { TILE_WIDTH*4, TILE_HEIGHT*1, TILE_WIDTH*2, TILE_HEIGHT*2 };
+    pacman_clips[0] = { PACMAN_WIDTH*2, PACMAN_HEIGHT*1, PACMAN_WIDTH*2, PACMAN_HEIGHT*2 };
+    pacman_clips[1] = { PACMAN_WIDTH*4, PACMAN_HEIGHT*1, PACMAN_WIDTH*2, PACMAN_HEIGHT*2 };
     //big pac-man animation counter
     int animation = 0;
     //big pac-man movement
@@ -64,11 +63,13 @@ void Game::menu(Texture& spritesheet)
     SDL_RendererFlip flip_type;
     //big pac-man x direction
     bool moving_right;
+    //starts off moving right
     if ( rand() % 2 == 0)
     {
         moving_right = true;
         flip_type = SDL_FLIP_NONE;
     }
+    //starts off moving left
     else
     {
         moving_right = false;
@@ -78,7 +79,7 @@ void Game::menu(Texture& spritesheet)
     
     //tile dimensions for clip rendering
     SDL_Rect clip;
-    clip = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
+    clip = { 0, 0, PACMAN_WIDTH, PACMAN_HEIGHT };
     
     //yellow title text
     Texture title;
@@ -302,27 +303,11 @@ void Game::maze(Texture& spritesheet)
     //stores event information
     SDL_Event event;
     
-    //create pacman object
-    Pacman pacman(spritesheet);
-    
     //load maze image
     Texture maze;
     maze.load_image("maze.png");
     //bottom layer maze clip
-    SDL_Rect bottom_maze = { 448, 0 , 448, 491 };
-    //top layer maze tiler
-    std::vector<std::vector<SDL_Rect>> tiles(14);
-    SDL_Rect clip;
-    //14 by 16 2D vector
-    for (int i = 0; i < tiles.size(); ++i)
-    {
-        for (int j = 0; j < 16; ++j)
-        {
-            //creating 14*16 32*31 clips for the maze image to render in tiles
-            clip = { TILE_WIDTH*i, TILE_HEIGHT*j, TILE_WIDTH, TILE_HEIGHT };
-            tiles[i].push_back(clip);
-        }
-    }
+    SDL_Rect bottom_maze = { 451, 0 , WINDOW_WIDTH, WINDOW_HEIGHT };
     
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
@@ -341,17 +326,7 @@ void Game::maze(Texture& spritesheet)
                 //end main loop
                 level = END;
             }
-        
-            //handle event for pacman velocity
-            pacman.handle(event);
         }
-        
-        
-        //move pacman
-        pacman.move();
-        
-        
-        
         
         //clear window black
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
@@ -359,13 +334,6 @@ void Game::maze(Texture& spritesheet)
         
         //render bottom layer maze (empty)
         maze.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &bottom_maze);
-        //render top layer maze tiles (filled with pellets)
-        for (int i = 0; i < tiles.size(); ++i)
-            for (int j = 0; j < 16; ++j)
-                    maze.render( TILE_WIDTH*i, TILE_HEIGHT*j, &tiles[i][j], NOT_CENTERED );
-        
-        //render pacman
-        pacman.render();
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );

@@ -17,10 +17,9 @@ extern SDL_Window* window;
 const int WINDOW_WIDTH = 448;
 const int WINDOW_HEIGHT = 491;
 
-//map tile dimensions
-const int TILE_WIDTH = 32;
-const int TILE_HEIGHT = 31;
-
+//pacman clip dimensions
+const int PACMAN_WIDTH = 32;
+const int PACMAN_HEIGHT = 32;
 
 //renderer
 extern SDL_Renderer* renderer;
@@ -34,14 +33,11 @@ extern TTF_Font* smallest_font;
 //level enumerations
 enum Level { MENU, MAZE, INSTRUCTIONS, END };
 
-//obstacle state enumerations
-enum Obstacle_State { NOT_OBSTACLE, OBSTACLE };
-
-//pacman animation state enumerations
+//boxman animation state enumerations
 enum Animation_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING };
 
 //texture render enumerations
-enum Center_Or_Not { CENTERED, NOT_CENTERED };
+enum Center_State { CENTERED, NOT_CENTERED };
 
 
 
