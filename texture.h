@@ -1,6 +1,6 @@
 //Arman Farhangi
 //May 11, 2015
-//PAC-MAN Game
+//BOX-MAN Game
 //C++ and SDL
 
 #ifndef __pacman__texture__

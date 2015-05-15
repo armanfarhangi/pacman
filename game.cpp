@@ -6,11 +6,12 @@
 //libraries
 #include <SDL2/SDL.h>
 #include <vector>
+#include <fstream>
 //headers
 #include "texture.h"
 #include "game.h"
 #include "globals.h"
-
+#include "tile.h"
 
 
 /******* GAME CLASS DEFS *******/
@@ -21,6 +22,9 @@ Game::Game()
     level = MENU;
     spritesheet.load_image("boxman_sheet.png");
 }
+
+
+
 
 //starts main game loop
 void Game::start()
@@ -39,6 +43,10 @@ void Game::start()
             maze();
     }
 }
+
+
+
+
 
 //starts menu loop
 void Game::menu()
@@ -115,7 +123,7 @@ void Game::menu()
                     //if top button, move button outline down
                     if (button_select == true)
                     {
-                        button_outline.y += play.get_height() + 20;
+                        button_outline.y += play.get_height() + 10;
                         button_outline.x -= 103;
                         button_outline.w += play.get_width() + 100;
                         button_select = false;
@@ -123,7 +131,7 @@ void Game::menu()
                     //if bottom button, move button outline up
                     else if (button_select == false)
                     {
-                        button_outline.y -= play.get_height() + 20;
+                        button_outline.y -= play.get_height() + 10;
                         button_outline.x += 103;
                         button_outline.w -= play.get_width() + 100;
                         button_select = true;
@@ -162,18 +170,18 @@ void Game::menu()
         
             //render boxman
             if (animation/8 == 2) animation = 0;
-            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], 3, CENTERED, 0.0, NULL, flip_type);
+            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], 5, NOT_CENTERED, 0.0, NULL, flip_type);
             ++animation;
         
             //if boxman moves too far right
-            if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*7)/10)
+            if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*5)/10)
             {
                 //change x direction
                 moving_right = !moving_right;
                 flip_type = SDL_FLIP_HORIZONTAL;
             }
             //if boxman moves too far left
-            else if ( WINDOW_WIDTH/2 + movement < (WINDOW_WIDTH*3)/10 )
+            else if ( WINDOW_WIDTH/2 + movement < (WINDOW_WIDTH*2)/10 )
             {
                 //change x direction
                 moving_right = !moving_right;
@@ -197,6 +205,8 @@ void Game::menu()
             SDL_RenderPresent( renderer );
     }
 }
+
+
 
 
 //starts instructions loop
@@ -285,6 +295,10 @@ void Game::instructions()
     }
 }
 
+
+
+
+
 //starts maze loop
 void Game::maze()
 {
@@ -295,6 +309,18 @@ void Game::maze()
     
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+    
+    //create map using tiler
+    std::vector<std::vector<Tile>> tiler(Y_TILES);
+    std::ifstream read_tiles;
+    read_tiles.open("tile_layout.txt");
+    bool obstacle_state;
+    for (int i = 0; i < Y_TILES; ++i)
+        for (int j = 0; j < X_TILES; ++j)
+        {
+            read_tiles >> obstacle_state;
+            tiler[i].push_back( Tile( obstacle_state) );
+        }
     
     //game loop
     while (quit == false)
@@ -315,6 +341,11 @@ void Game::maze()
         //clear window black
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_RenderClear(renderer);
+        
+        //render tiles
+        for (int i = 0; i < Y_TILES; ++i)
+           for (int j = 0; j < X_TILES; ++j)
+                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiler[i][j].get_clip(), 1, NOT_CENTERED);
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );

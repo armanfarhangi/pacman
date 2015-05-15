@@ -1,6 +1,6 @@
 //Arman Farhangi
 //May 12, 2015
-//Pacman Game
+//BOX-MAN Game
 //Standard C++ and SDL Libraries
 
 //headers
