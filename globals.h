@@ -38,10 +38,13 @@ extern TTF_Font* smallest_font;
 enum Level { MENU, MAZE, INSTRUCTIONS, END };
 
 //texture render enumerations
-enum Center_State { CENTERED, NOT_CENTERED };
+enum Texture_Centered_State { CENTERED, NOT_CENTERED };
 
 //boxman animation state enumerations
-enum Animation_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING };
+enum Moving_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING };
+
+//tile obstacle state
+enum Obstacle_State { NON_OBSTACLE, OBSTACLE };
 
 #endif
 

@@ -7,7 +7,6 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <fstream>
-#include <iostream>
 //headers
 #include "texture.h"
 #include "game.h"
@@ -82,6 +81,7 @@ void Game::menu()
         moving_right = false;
         flip_type = SDL_FLIP_HORIZONTAL;
     }
+    
     
     //yellow title text
     Texture title;
@@ -170,21 +170,15 @@ void Game::menu()
             //render title
             title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8, NULL, CENTERED);
         
-            //render boxman
-            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], NOT_CENTERED, 5, 0.0, NULL, flip_type);
-            ++animation;
-            if (animation/8 == 2)
-                animation = 0;
-        
             //if boxman moves too far right
-            if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*5)/10)
+            if ( (WINDOW_WIDTH/2 - 2*TILE_WIDTH) + movement > (WINDOW_WIDTH*6)/10)
             {
                 //change x direction
                 moving_right = !moving_right;
                 flip_type = SDL_FLIP_HORIZONTAL;
             }
             //if boxman moves too far left
-            else if ( WINDOW_WIDTH/2 + movement < (WINDOW_WIDTH*2)/10 )
+            else if ( (WINDOW_WIDTH/2 - 2*TILE_WIDTH) + movement < (WINDOW_WIDTH*2)/10 )
             {
                 //change x direction
                 moving_right = !moving_right;
@@ -197,6 +191,12 @@ void Game::menu()
             //if bound left, move left
             else if ( moving_right == false)
                 --movement;
+        
+            //render boxman
+            spritesheet.render( (WINDOW_WIDTH/2 - 2*TILE_WIDTH) + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], NOT_CENTERED, 5, 0.0, NULL, flip_type);
+            ++animation;
+            if (animation/8 == 2)
+                animation = 0;
         
             //render PLAY
             play.render(WINDOW_WIDTH/2, (WINDOW_HEIGHT*8)/10, NULL, CENTERED);
@@ -327,21 +327,6 @@ void Game::maze()
             read_tiles >> obstacle_state;
             tiles[i].push_back( Tile( obstacle_state, j, i) );
         }
-    
-    /*//TEST hitbox pixel coordinates of each tile
-    std::ofstream test_tiles;
-    test_tiles.open("test.txt");
-    int count = 0;
-    for (int i = 0; i < Y_TILES; ++i)
-        for (int j = 0; j < X_TILES; ++j)
-        {
-            ++count;
-            test_tiles << "(" << tiles[i][j].get_x() << ", " << tiles[i][j].get_y() << ") ";
-            if (count % 23 == 0)
-                test_tiles << "\n\n";
-        }*/
-    
-    
     
     //boxman
     Boxman boxman(&spritesheet, &tiles);

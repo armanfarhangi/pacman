@@ -22,7 +22,7 @@ public:
     
     //accessors
     SDL_Rect& get_clip();
-    bool is_obstacle();
+    bool get_state();
     
 private:
     //clip to render tile

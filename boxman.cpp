@@ -6,10 +6,11 @@
 //headers
 #include "boxman.h"
 #include "globals.h"
+#include <iostream>
 
 /******* BOXMAN CLASS DEFS *******/
 //set boxman animation clips
-Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* tiles)
+Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles)
 {
     //set Game spritesheet reference
     Boxman::spritesheet = spritesheet;
@@ -59,45 +60,32 @@ Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* tiles)
     x_vel = 0;
     y_vel = 0;
     
+    //initialize direction queue
+    direction_queue = MOVING_RIGHT;
+    
     //set tiles pointer
-    Boxman::tiles = tiles;
+    tiles = map_tiles;
 }
 
 
 //handle events for movement (only move one direction at a time)
 void Boxman::handle(SDL_Event e)
 {
-    //if event is a non-repeat key press and pacman is in the center of a tile
+    //if event is a non-repeat key press and boxman is in the center of a tile
     if ( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
     {
         //if event is right key
         if ( e.key.keysym.sym == SDLK_RIGHT )
-            {
-                y_vel = 0;
-                x_vel = SPEED;
-                moving_state = MOVING_RIGHT;
-            }
+                direction_queue = MOVING_RIGHT;
         //if event is left key
         else if ( e.key.keysym.sym == SDLK_LEFT )
-            {
-                y_vel = 0;
-                x_vel = -SPEED;
-                moving_state = MOVING_LEFT;
-            }
+                direction_queue = MOVING_LEFT;
         //if event is up key
         if (e.key.keysym.sym == SDLK_UP)
-        {
-            x_vel = 0;
-            y_vel = -SPEED;
-            moving_state = MOVING_UP;
-        }
+            direction_queue = MOVING_UP;
         //if event is down key
         if (e.key.keysym.sym == SDLK_DOWN)
-        {
-            x_vel = 0;
-            y_vel = SPEED;
-            moving_state = MOVING_DOWN;
-        }
+            direction_queue = MOVING_DOWN;
     }
 }
 
@@ -105,13 +93,47 @@ void Boxman::handle(SDL_Event e)
 //move boxman
 void Boxman::move()
 {
+    //if queued right and can move right
+    if ( direction_queue == MOVING_RIGHT && can_move_right() )
+    {
+        //gear boxman right
+        y_vel = 0;
+        x_vel = SPEED;
+        moving_state = MOVING_RIGHT;
+    }
+    //if queued left and can move left
+    else if ( direction_queue == MOVING_LEFT && can_move_left() )
+    {
+        //gear boxman left
+        y_vel = 0;
+        x_vel = -SPEED;
+        moving_state = MOVING_LEFT;
+    }
+    //if queued up and can move up
+    else if ( direction_queue == MOVING_UP && can_move_up() )
+    {
+        //gear boxman up
+        x_vel = 0;
+        y_vel = -SPEED;
+        moving_state = MOVING_UP;
+    }
+    //if queued down and can move down
+    else if ( direction_queue == MOVING_DOWN && can_move_down() )
+    {
+        //gear boxman down
+        x_vel = 0;
+        y_vel = SPEED;
+        moving_state = MOVING_DOWN;
+    }
+
+    
     //change position based on velocity
     x_pos += x_vel;
     y_pos += y_vel;
     //move hitbox too
     hitbox.x += x_vel;
     hitbox.y += y_vel;
-    //keep track of tile for map collisions (base tile position on center of boxman)
+    //keep track of tile for map collisions (determine tile position by center of boxman)
     x_tile = (x_pos + TILE_WIDTH/2)/TILE_WIDTH;
     y_tile = (y_pos + TILE_WIDTH/2)/TILE_HEIGHT;
         
@@ -128,21 +150,61 @@ void Boxman::move()
 }
 
 
-//check if boxman collided with top, right, bottom, and left surroundings
+//check if pacman has an aligned non-obstacle tile to the right
+bool Boxman::can_move_right()
+{
+   return ((*tiles)[y_tile][x_tile + 1].get_state() == NON_OBSTACLE && y_pos % 30 == 0 );
+}
+
+
+//check if pacman has an aligned non-obstacle tile to the left
+bool Boxman::can_move_left()
+{
+    return ( (*tiles)[y_tile][x_tile - 1].get_state() == NON_OBSTACLE  && y_pos % 30 == 0 );
+}
+
+
+//check if pacman has an aligned non-obstacle tile above
+bool Boxman::can_move_up()
+{
+    return ( (*tiles)[y_tile - 1][x_tile].get_state() == NON_OBSTACLE && x_pos % 30 == 0 );
+}
+
+
+//check if pacman has an aligned non-obstacle tile below
+bool Boxman::can_move_down()
+{
+    return ( (*tiles)[y_tile + 1][x_tile].get_state() == NON_OBSTACLE && x_pos % 30 == 0 );
+}
+
+//check if boxman collided into obstacles in surrounding 8 tiles
 bool Boxman::moved_into_surroundings()
 {
-    //if pacman collided with above tile
-    if ( collided( (*tiles)[y_tile - 1][x_tile]) )
+    //if boxman collided with above tile
+    if ( collided( (*tiles)[y_tile - 1][x_tile ]) )
         return true;
-    //if pacman collided with below tile
-    else if ( collided( (*tiles)[y_tile + 1][x_tile]) )
+    //if boxman collided with below tile
+    else if ( collided( (*tiles)[y_tile + 1][x_tile] ) )
         return true;
-    //if pacman collided with right tile
-    else if ( collided( (*tiles)[y_tile][x_tile + 1]) )
+    //if boxman collided with right tile
+    else if ( collided( (*tiles)[y_tile][x_tile + 1] ) )
         return true;
-    //if pacman collided with left tile
-    else if ( collided( (*tiles)[y_tile][x_tile - 1]) )
+    //if boxman collided with left tile
+    else if ( collided( (*tiles)[y_tile][x_tile - 1] ) )
         return true;
+    //if boxman collided with above-right tile
+    else if ( collided( (*tiles)[y_tile - 1][x_tile + 1] ) )
+        return true;
+    //if boxman collided with below-right tile
+    else if ( collided( (*tiles)[y_tile + 1][x_tile + 1] ) )
+        return true;
+    //if boxman collided with below-left tile
+    else if ( collided( (*tiles)[y_tile + 1][x_tile - 1] ) )
+        return true;
+    //if boxman collided with above-left tile
+    else if ( collided( (*tiles)[y_tile - 1][x_tile - 1] ) )
+        return true;
+    
     return false;
 }
 

@@ -13,6 +13,7 @@
 #include "texture.h"
 #include "tile.h"
 #include "collider.h"
+#include "globals.h"
 
 /****** BOXMAN CLASS DECLARES ********/
 //player character
@@ -20,18 +21,24 @@ class Boxman : Collider
 {
 public:
     //constants
-    const static int SPEED = 1;
+    const static int SPEED = 2;
     const static int WIDTH = TILE_WIDTH;
     const static int HEIGHT = TILE_HEIGHT;
     
     //constructor
-    Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* tiles);
+    Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles);
     
     //handle events
     void handle(SDL_Event e);
     
     //move boxman
     void move();
+    
+    //check if boxman can move a certain direction
+    bool can_move_right();
+    bool can_move_left();
+    bool can_move_up();
+    bool can_move_down();
     
     //check if boxman moved into obstacle
     bool moved_into_surroundings();
@@ -61,6 +68,9 @@ private:
     //velocity
     int x_vel;
     int y_vel;
+    
+    //most recent direction desired by player
+    int direction_queue;
     
     //tile position on window
     int x_tile;

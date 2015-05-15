@@ -18,19 +18,19 @@ Tile::Tile( int obstacle_state, int x_tile, int y_tile )
         //set obstacle clip to render from spritesheet
         clip = { TILE_WIDTH*1, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
         hitbox = { TILE_WIDTH * x_tile, TILE_HEIGHT * y_tile, TILE_WIDTH, TILE_HEIGHT };
-        Tile::obstacle_state = true;
+        Tile::obstacle_state = OBSTACLE;
     }
     //if tile isn't obstacle
     else if ( obstacle_state == 0 )
     {
         //set non-obstacle clip
         clip = { TILE_WIDTH*0, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
-        Tile::obstacle_state = false;
+        Tile::obstacle_state = NON_OBSTACLE;
     }
 }
 
 //gets obstacle state
-bool Tile::is_obstacle()
+bool Tile::get_state()
 {
     return obstacle_state;
 }
