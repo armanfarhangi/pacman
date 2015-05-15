@@ -19,11 +19,16 @@ class Tile : public Collider
 public:
     //constructor
     Tile(int obstacle_state, int x_tile, int y_tile);
-    //accessor
+    
+    //accessors
     SDL_Rect& get_clip();
+    bool is_obstacle();
+    
 private:
     //clip to render tile
     SDL_Rect clip;
+    //obstacle state
+    bool obstacle_state;
 };
 
 #endif

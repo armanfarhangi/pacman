@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <fstream>
+#include <iostream>
 //headers
 #include "texture.h"
 #include "game.h"
@@ -318,13 +319,29 @@ void Game::maze()
     std::ifstream read_tiles;
     read_tiles.open("tile_layout.txt");
     bool obstacle_state;
-    //read in map file values to determine tiles
+    //for the amount of y tiles by the amount of x tiles
     for (int i = 0; i < Y_TILES; ++i)
         for (int j = 0; j < X_TILES; ++j)
         {
+            //read in tile state from txt file
             read_tiles >> obstacle_state;
             tiles[i].push_back( Tile( obstacle_state, j, i) );
         }
+    
+    /*//TEST hitbox pixel coordinates of each tile
+    std::ofstream test_tiles;
+    test_tiles.open("test.txt");
+    int count = 0;
+    for (int i = 0; i < Y_TILES; ++i)
+        for (int j = 0; j < X_TILES; ++j)
+        {
+            ++count;
+            test_tiles << "(" << tiles[i][j].get_x() << ", " << tiles[i][j].get_y() << ") ";
+            if (count % 23 == 0)
+                test_tiles << "\n\n";
+        }*/
+    
+    
     
     //boxman
     Boxman boxman(&spritesheet, &tiles);
@@ -352,15 +369,10 @@ void Game::maze()
         //move boxman
         boxman.move();
         
-        
-        //clear window black
-        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-        SDL_RenderClear(renderer);
-        
         //render tiles
         for (int i = 0; i < Y_TILES; ++i)
            for (int j = 0; j < X_TILES; ++j)
-                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiles[i][j].get_clip(), 1, NOT_CENTERED);
+                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiles[i][j].get_clip(), NOT_CENTERED);
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );

@@ -67,7 +67,7 @@ Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* tiles)
 //handle events for movement (only move one direction at a time)
 void Boxman::handle(SDL_Event e)
 {
-    //if event is a non-repeat key press
+    //if event is a non-repeat key press and pacman is in the center of a tile
     if ( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
     {
         //if event is right key
@@ -111,15 +111,13 @@ void Boxman::move()
     //move hitbox too
     hitbox.x += x_vel;
     hitbox.y += y_vel;
-    //keep track of tile for map collisions
-    x_tile = x_pos/TILE_WIDTH;
-    y_tile = y_pos/TILE_HEIGHT;
+    //keep track of tile for map collisions (base tile position on center of boxman)
+    x_tile = (x_pos + TILE_WIDTH/2)/TILE_WIDTH;
+    y_tile = (y_pos + TILE_WIDTH/2)/TILE_HEIGHT;
+        
     
-    //if boxman collided with an obstacle
-    if ( collided((*tiles)[x_tile+1][y_tile])
-        || collided((*tiles)[x_tile-1][y_tile])
-        || collided((*tiles)[x_tile][y_tile-1])
-        || collided((*tiles)[x_tile][y_tile+1]) )
+    //if boxman moved into an obstacle tile
+    if ( moved_into_surroundings() )
     {
         //negate movement
         x_pos -= x_vel;
@@ -127,6 +125,25 @@ void Boxman::move()
         hitbox.x -= x_vel;
         hitbox.y -= y_vel;
     }
+}
+
+
+//check if boxman collided with top, right, bottom, and left surroundings
+bool Boxman::moved_into_surroundings()
+{
+    //if pacman collided with above tile
+    if ( collided( (*tiles)[y_tile - 1][x_tile]) )
+        return true;
+    //if pacman collided with below tile
+    else if ( collided( (*tiles)[y_tile + 1][x_tile]) )
+        return true;
+    //if pacman collided with right tile
+    else if ( collided( (*tiles)[y_tile][x_tile + 1]) )
+        return true;
+    //if pacman collided with left tile
+    else if ( collided( (*tiles)[y_tile][x_tile - 1]) )
+        return true;
+    return false;
 }
 
 //render current boxman clip

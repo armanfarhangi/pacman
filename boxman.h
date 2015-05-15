@@ -33,6 +33,9 @@ public:
     //move boxman
     void move();
     
+    //check if boxman moved into obstacle
+    bool moved_into_surroundings();
+    
     //render boxman
     void render();
     
