@@ -26,7 +26,7 @@ public:
     int get_height();
     
     //checks for collisions
-    bool collided(Collider* object2);
+    bool collided(Collider object2);
     
 protected:
     //used to check for collisions

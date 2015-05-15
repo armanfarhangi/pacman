@@ -35,7 +35,7 @@ void Texture::load_image(std::string path)
     else
     {
         //make pacman spritesheet black background pixels transparent
-        SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0, 0) );
+        SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB(surface->format, 3, 3, 3) );
         
         //create texture from surface
         texture = SDL_CreateTextureFromSurface( renderer, surface);
@@ -88,7 +88,7 @@ void Texture::load_text(TTF_Font* font, SDL_Color color, std::string text)
 }
 
 //render texture or texture clip to window
-void Texture::render(int x, int y, SDL_Rect* clip, int scale, int centered, double rotation, SDL_Point* center, SDL_RendererFlip flip_type)
+void Texture::render(int x, int y, SDL_Rect* clip, int centered, int scale, double rotation, SDL_Point* center, SDL_RendererFlip flip_type)
 {
     //render target
     SDL_Rect render_rect;

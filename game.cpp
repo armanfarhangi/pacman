@@ -12,6 +12,7 @@
 #include "game.h"
 #include "globals.h"
 #include "tile.h"
+#include "boxman.h"
 
 
 /******* GAME CLASS DEFS *******/
@@ -20,7 +21,7 @@
 Game::Game()
 {
     level = MENU;
-    spritesheet.load_image("boxman_sheet.png");
+    spritesheet.load_image("boxman_sheet.jpg");
 }
 
 
@@ -169,9 +170,10 @@ void Game::menu()
             title.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/8, NULL, CENTERED);
         
             //render boxman
-            if (animation/8 == 2) animation = 0;
-            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], 5, NOT_CENTERED, 0.0, NULL, flip_type);
+            spritesheet.render(WINDOW_WIDTH/2 + movement, (WINDOW_HEIGHT/5)*2, &boxman_clips[animation/8], NOT_CENTERED, 5, 0.0, NULL, flip_type);
             ++animation;
+            if (animation/8 == 2)
+                animation = 0;
         
             //if boxman moves too far right
             if ( WINDOW_WIDTH/2 + movement > (WINDOW_WIDTH*5)/10)
@@ -276,12 +278,12 @@ void Game::instructions()
         SDL_SetRenderDrawColor( renderer, 219, 112, 147, 255 );
         
         //render instructions
-        instruction1.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*2)/10);
-        instruction2.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*3)/10);
-        instruction3.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*4)/10);
-        instruction4.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*5)/10);
+        instruction1.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*2)/10, NULL, CENTERED);
+        instruction2.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*3)/10, NULL, CENTERED);
+        instruction3.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*4)/10, NULL, CENTERED);
+        instruction4.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*5)/10, NULL, CENTERED);
         //render back button
-        back.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*7)/10);
+        back.render( WINDOW_WIDTH/2, (WINDOW_HEIGHT*7)/10, NULL, CENTERED);
         
         //set color to white for outlines
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -311,7 +313,7 @@ void Game::maze()
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
     
     //create map using tiler
-    std::vector<std::vector<Tile>> tiler(Y_TILES);
+    std::vector<std::vector<Tile>> tiles(Y_TILES);
     //open map file values
     std::ifstream read_tiles;
     read_tiles.open("tile_layout.txt");
@@ -321,8 +323,11 @@ void Game::maze()
         for (int j = 0; j < X_TILES; ++j)
         {
             read_tiles >> obstacle_state;
-            tiler[i].push_back( Tile( obstacle_state) );
+            tiles[i].push_back( Tile( obstacle_state, j, i) );
         }
+    
+    //boxman
+    Boxman boxman(&spritesheet, &tiles);
     
     //game loop
     while (quit == false)
@@ -338,7 +343,15 @@ void Game::maze()
                 //end main loop
                 level = END;
             }
+            
+            //handle boxman velocity
+            boxman.handle(event);
         }
+        
+        
+        //move boxman
+        boxman.move();
+        
         
         //clear window black
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
@@ -347,11 +360,14 @@ void Game::maze()
         //render tiles
         for (int i = 0; i < Y_TILES; ++i)
            for (int j = 0; j < X_TILES; ++j)
-                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiler[i][j].get_clip(), 1, NOT_CENTERED);
+                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiles[i][j].get_clip(), 1, NOT_CENTERED);
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
         SDL_RenderDrawRect( renderer, &window_outline );
+        
+        //render boxman
+        boxman.render();
         
         //update window with queued renders
         SDL_RenderPresent( renderer );
