@@ -19,8 +19,8 @@ extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
 //tile dimensions
-const int TILE_WIDTH = 16;
-const int TILE_HEIGHT = 16;
+const int TILE_WIDTH = 30;
+const int TILE_HEIGHT = 30;
 //tile counts
 const int X_TILES = 23;
 const int Y_TILES = 23;

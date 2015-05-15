@@ -15,13 +15,13 @@ Tile::Tile( int obstacle_state )
     //if tile is obstacle
     if ( obstacle_state == 1 )
     {
-        clip = { TILE_WIDTH*3, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
+        clip = { TILE_WIDTH*1, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
         is_obstacle = true;
     }
     //if tile isn't obstacle
     else if ( obstacle_state == 0 )
     {
-        clip = { TILE_WIDTH*2, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
+        clip = { TILE_WIDTH*0, TILE_HEIGHT*0, TILE_WIDTH, TILE_HEIGHT };
         is_obstacle = false;
     }
 }

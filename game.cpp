@@ -58,8 +58,8 @@ void Game::menu()
     
     //boxman animation clips
     std::vector<SDL_Rect> boxman_clips(2);
-    boxman_clips[0] = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
-    boxman_clips[1] = { TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT };
+    boxman_clips[0] = { 0, TILE_HEIGHT*1, TILE_WIDTH, TILE_HEIGHT };
+    boxman_clips[1] = { TILE_WIDTH*1, TILE_HEIGHT*1, TILE_WIDTH, TILE_HEIGHT };
     //boxman animation counter
     int animation = 0;
     //boxman movement
@@ -84,7 +84,7 @@ void Game::menu()
     //yellow title text
     Texture title;
     SDL_Color color = { 250, 218, 10, 255 };
-    title.load_text(medium_font, color, "BOX-MAN");
+    title.load_text(big_font, color, "BOX-MAN");
     //PLAY text
     Texture play;
     play.load_text(medium_font, color, "PLAY");
@@ -123,7 +123,7 @@ void Game::menu()
                     //if top button, move button outline down
                     if (button_select == true)
                     {
-                        button_outline.y += play.get_height() + 10;
+                        button_outline.y += play.get_height() + 40;
                         button_outline.x -= 103;
                         button_outline.w += play.get_width() + 100;
                         button_select = false;
@@ -131,7 +131,7 @@ void Game::menu()
                     //if bottom button, move button outline up
                     else if (button_select == false)
                     {
-                        button_outline.y -= play.get_height() + 10;
+                        button_outline.y -= play.get_height() + 40;
                         button_outline.x += 103;
                         button_outline.w -= play.get_width() + 100;
                         button_select = true;
@@ -217,19 +217,19 @@ void Game::instructions()
     
     //create first instruction
     Texture instruction1;
-    instruction1.load_text(smallest_font, color, "EAT ALL THE PELLETS");
+    instruction1.load_text(small_font, color, "EAT ALL THE PELLETS");
     //create second instruction
     Texture instruction2;
-    instruction2.load_text(smallest_font, color, "MOVE WITH UP/DOWN/LEFT/RIGHT KEYS");
+    instruction2.load_text(small_font, color, "MOVE WITH UP/DOWN/LEFT/RIGHT KEYS");
     //create third instruction
     Texture instruction3;
-    instruction3.load_text(smallest_font, color, "AVOID GHOSTS");
+    instruction3.load_text(small_font, color, "AVOID GHOSTS");
     //create fourth instruction
     Texture instruction4;
-    instruction4.load_text(smallest_font, color, "BIG PELLETS LET YOU EAT GHOSTS");
+    instruction4.load_text(small_font, color, "BIG PELLETS LET YOU EAT GHOSTS");
     //create back button text
     Texture back;
-    back.load_text(smallest_font, color, "BACK TO MENU");
+    back.load_text(small_font, color, "BACK TO MENU");
     
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
@@ -312,9 +312,11 @@ void Game::maze()
     
     //create map using tiler
     std::vector<std::vector<Tile>> tiler(Y_TILES);
+    //open map file values
     std::ifstream read_tiles;
     read_tiles.open("tile_layout.txt");
     bool obstacle_state;
+    //read in map file values to determine tiles
     for (int i = 0; i < Y_TILES; ++i)
         for (int j = 0; j < X_TILES; ++j)
         {
