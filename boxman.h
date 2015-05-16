@@ -14,6 +14,7 @@
 #include "tile.h"
 #include "collider.h"
 #include "globals.h"
+#include "pellet.h"
 
 /****** BOXMAN CLASS DECLARES ********/
 //player character
@@ -26,7 +27,7 @@ public:
     const static int HEIGHT = TILE_HEIGHT;
     
     //constructor
-    Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles);
+    Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles, std::vector<std::vector<Pellet>>* pellets);
     
     //handle events
     void handle(SDL_Event e);
@@ -41,7 +42,10 @@ public:
     bool can_move_down();
     
     //check if boxman moved into obstacle
-    bool moved_into_surroundings();
+    bool moved_into_obstacle();
+    
+    //check if boxman collided with a pellet
+    void check_pellet_collisions();
     
     //render boxman
     void render();
@@ -78,6 +82,12 @@ private:
     
     //pointer to map tiles (to check for obstacles)
     std::vector<std::vector<Tile>>* tiles;
+    
+    //pointer to pellet objects (to check for eating)
+    std::vector<std::vector<Pellet>>* pellets;
+    
+    //pellets eaten
+    int pellets_eaten;
 };
 
 #endif

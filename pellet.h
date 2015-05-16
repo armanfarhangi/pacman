@@ -20,9 +20,8 @@ public:
     //render pellet
     void render();
     
-private:
-    //used to render
-    SDL_Rect pellet_rect;
+    //destroy pellet (when boxman eats it)
+    void destroy();
 };
 
 #endif

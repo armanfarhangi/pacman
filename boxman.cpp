@@ -6,11 +6,10 @@
 //headers
 #include "boxman.h"
 #include "globals.h"
-#include <iostream>
 
 /******* BOXMAN CLASS DEFS *******/
 //set boxman animation clips
-Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles)
+Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles, std::vector<std::vector<Pellet>>* map_pellets)
 {
     //set Game spritesheet reference
     Boxman::spritesheet = spritesheet;
@@ -65,6 +64,12 @@ Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles)
     
     //set tiles pointer
     tiles = map_tiles;
+    
+    //set pellets pointer
+    pellets = map_pellets;
+    
+    //initialize pellets eaten
+    pellets_eaten = 0;
 }
 
 
@@ -139,7 +144,7 @@ void Boxman::move()
         
     
     //if boxman moved into an obstacle tile
-    if ( moved_into_surroundings() )
+    if ( moved_into_obstacle() )
     {
         //negate movement
         x_pos -= x_vel;
@@ -147,6 +152,9 @@ void Boxman::move()
         hitbox.x -= x_vel;
         hitbox.y -= y_vel;
     }
+    
+    //check for pellet collisions
+    check_pellet_collisions();
 }
 
 
@@ -178,7 +186,7 @@ bool Boxman::can_move_down()
 }
 
 //check if boxman collided into obstacles in surrounding 8 tiles
-bool Boxman::moved_into_surroundings()
+bool Boxman::moved_into_obstacle()
 {
     //if boxman collided with above tile
     if ( collided( (*tiles)[y_tile - 1][x_tile ]) )
@@ -206,6 +214,18 @@ bool Boxman::moved_into_surroundings()
         return true;
     
     return false;
+}
+
+//check if boxman collided with pellets
+void Boxman::check_pellet_collisions()
+{
+    //if boxman collided with pellet
+    if ( collided( (*pellets)[y_tile][x_tile]) )
+    {
+        //destroy pellet and raise count
+        (*pellets)[y_tile][x_tile].destroy();
+        ++pellets_eaten;
+    }
 }
 
 //render current boxman clip

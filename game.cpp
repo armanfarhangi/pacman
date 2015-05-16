@@ -331,9 +331,6 @@ void Game::maze()
     //close stream when done
     read_tiles.close();
     
-    //boxman
-    Boxman boxman(&spritesheet, &tiles);
-    
     //create pellets
     std::vector<std::vector<Pellet>> pellets(Y_TILES);
     //open file to determine if pellets on each tile
@@ -348,6 +345,9 @@ void Game::maze()
             read_pellets >> pellet_on_tile;
             pellets[i].push_back( Pellet( pellet_on_tile, TILE_WIDTH*j, TILE_HEIGHT*i ) );
         }
+    
+    //boxman
+    Boxman boxman(&spritesheet, &tiles, &pellets);
     
     //game loop
     while (quit == false)
