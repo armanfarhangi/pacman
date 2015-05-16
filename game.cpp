@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "tile.h"
 #include "boxman.h"
+#include "pellet.h"
 
 
 /******* GAME CLASS DEFS *******/
@@ -313,9 +314,9 @@ void Game::maze()
     //window outline
     SDL_Rect window_outline = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
     
-    //create map using tiler
+    //create map with 25 x 25 tiles
     std::vector<std::vector<Tile>> tiles(Y_TILES);
-    //open map file values
+    //open map file to determine what kind of tile
     std::ifstream read_tiles;
     read_tiles.open("tile_layout.txt");
     bool obstacle_state;
@@ -327,9 +328,26 @@ void Game::maze()
             read_tiles >> obstacle_state;
             tiles[i].push_back( Tile( obstacle_state, j, i) );
         }
+    //close stream when done
+    read_tiles.close();
     
     //boxman
     Boxman boxman(&spritesheet, &tiles);
+    
+    //create pellets
+    std::vector<std::vector<Pellet>> pellets(Y_TILES);
+    //open file to determine if pellets on each tile
+    std::ifstream read_pellets;
+    read_pellets.open("pellet_locations.txt");
+    bool pellet_on_tile;
+    //for y_tiles * x_tiles
+    for (int i = 0; i < Y_TILES; ++i)
+        for (int j = 0; j < X_TILES; ++j)
+        {
+            //read in pellet state from txt file
+            read_pellets >> pellet_on_tile;
+            pellets[i].push_back( Pellet( pellet_on_tile, TILE_WIDTH*j, TILE_HEIGHT*i ) );
+        }
     
     //game loop
     while (quit == false)
@@ -362,6 +380,11 @@ void Game::maze()
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
         SDL_RenderDrawRect( renderer, &window_outline );
+        
+        //render pellets
+        for (int i = 0; i < Y_TILES; ++i)
+            for (int j = 0; j < X_TILES; ++j)
+                pellets[i][j].render();
         
         //render boxman
         boxman.render();

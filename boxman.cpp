@@ -16,8 +16,8 @@ Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles)
     Boxman::spritesheet = spritesheet;
     
     //set default position
-    x_tile = 11;
-    y_tile = 19;
+    x_tile = 12;
+    y_tile = 20;
     x_pos = TILE_WIDTH * x_tile;
     y_pos = TILE_HEIGHT * y_tile;
     //set hitbox
