@@ -98,37 +98,41 @@ void Boxman::handle(SDL_Event e)
 //move boxman
 void Boxman::move()
 {
-    //if queued right and can move right
-    if ( direction_queue == MOVING_RIGHT && can_move_right() )
+    //only apply velocity if the game isn't over
+    if (pellets_eaten != 202)
     {
-        //gear boxman right
-        y_vel = 0;
-        x_vel = SPEED;
-        moving_state = MOVING_RIGHT;
-    }
-    //if queued left and can move left
-    else if ( direction_queue == MOVING_LEFT && can_move_left() )
-    {
-        //gear boxman left
-        y_vel = 0;
-        x_vel = -SPEED;
-        moving_state = MOVING_LEFT;
-    }
-    //if queued up and can move up
-    else if ( direction_queue == MOVING_UP && can_move_up() )
-    {
-        //gear boxman up
-        x_vel = 0;
-        y_vel = -SPEED;
-        moving_state = MOVING_UP;
-    }
-    //if queued down and can move down
-    else if ( direction_queue == MOVING_DOWN && can_move_down() )
-    {
-        //gear boxman down
-        x_vel = 0;
-        y_vel = SPEED;
-        moving_state = MOVING_DOWN;
+        //if queued right and can move right
+        if ( direction_queue == MOVING_RIGHT && can_move_right() )
+        {
+            //gear boxman right
+            y_vel = 0;
+            x_vel = SPEED;
+            moving_state = MOVING_RIGHT;
+        }
+        //if queued left and can move left
+        else if ( direction_queue == MOVING_LEFT && can_move_left() )
+        {
+            //gear boxman left
+            y_vel = 0;
+            x_vel = -SPEED;
+            moving_state = MOVING_LEFT;
+        }
+        //if queued up and can move up
+        else if ( direction_queue == MOVING_UP && can_move_up() )
+        {
+            //gear boxman up
+            x_vel = 0;
+            y_vel = -SPEED;
+            moving_state = MOVING_UP;
+        }
+        //if queued down and can move down
+        else if ( direction_queue == MOVING_DOWN && can_move_down() )
+        {
+            //gear boxman down
+            x_vel = 0;
+            y_vel = SPEED;
+            moving_state = MOVING_DOWN;
+        }
     }
 
     
@@ -294,4 +298,17 @@ void Boxman::render()
         if (animation/10 == 2)
             animation = 0;
     }
+}
+
+//get pellet count
+int Boxman::get_count()
+{
+    return pellets_eaten;
+}
+
+//stop boxman's movement
+void Boxman::stop()
+{
+    x_vel = 0;
+    y_vel = 0;
 }

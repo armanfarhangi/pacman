@@ -349,6 +349,11 @@ void Game::maze()
     //boxman
     Boxman boxman(&spritesheet, &tiles, &pellets);
     
+    //winning text
+    Texture you_win;
+    SDL_Color color = {250, 218, 10, 255};
+    you_win.load_text(big_font, color, "YOU WIN!");
+    
     //game loop
     while (quit == false)
     {
@@ -388,6 +393,13 @@ void Game::maze()
         
         //render boxman
         boxman.render();
+        
+        //upon eating all the pellets
+        if (boxman.get_count() == 202)
+        {
+            you_win.render(WINDOW_WIDTH/2, WINDOW_HEIGHT/4, NULL, CENTERED);
+            boxman.stop();
+        }
         
         //update window with queued renders
         SDL_RenderPresent( renderer );

@@ -35,6 +35,9 @@ public:
     //move boxman
     void move();
     
+    //stop boxman
+    void stop();
+    
     //check if boxman can move a certain direction
     bool can_move_right();
     bool can_move_left();
@@ -46,6 +49,9 @@ public:
     
     //check if boxman collided with a pellet
     void check_pellet_collisions();
+    
+    //get pellet count
+    int get_count();
     
     //render boxman
     void render();

@@ -41,7 +41,7 @@ bool setup()
     else
     {
         //create window titled PONG
-        window = SDL_CreateWindow( "PONG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+        window = SDL_CreateWindow( "BOX-MAN", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         
         //error check
         if (window == NULL)
