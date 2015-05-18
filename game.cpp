@@ -126,7 +126,7 @@ void Game::menu()
                     //if top button, move button outline down
                     if (button_select == true)
                     {
-                        button_outline.y += play.get_height() + 40;
+                        button_outline.y += play.get_height() + 47;
                         button_outline.x -= 103;
                         button_outline.w += play.get_width() + 100;
                         button_select = false;
@@ -134,7 +134,7 @@ void Game::menu()
                     //if bottom button, move button outline up
                     else if (button_select == false)
                     {
-                        button_outline.y -= play.get_height() + 40;
+                        button_outline.y -= play.get_height() + 47;
                         button_outline.x += 103;
                         button_outline.w -= play.get_width() + 100;
                         button_select = true;
@@ -336,7 +336,7 @@ void Game::maze()
     //open file to determine if pellets on each tile
     std::ifstream read_pellets;
     read_pellets.open("pellet_locations.txt");
-    bool pellet_on_tile;
+    int pellet_on_tile;
     //for y_tiles * x_tiles
     for (int i = 0; i < Y_TILES; ++i)
         for (int j = 0; j < X_TILES; ++j)

@@ -15,7 +15,7 @@ class Pellet : public Collider
 {
 public:
     //constructor sets window position
-    Pellet(bool is_pellet, int x, int y);
+    Pellet(int pellet_type, int x, int y);
     
     //render pellet
     void render();

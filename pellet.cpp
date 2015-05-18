@@ -12,13 +12,16 @@
 
 /******* PELLET CLASS DEFS *******/
 //constructor sets clip in relation to bool
-Pellet::Pellet(bool is_pellet, int x, int y)
+Pellet::Pellet(int pellet_type, int x, int y)
 {
-    //if tile read in is pellet, then create pellet
-    if (is_pellet == true)
+    //if regular pellet
+    if (pellet_type == 1)
         hitbox = { (x + TILE_WIDTH/2 - 2), (y + TILE_HEIGHT/2 - 2), 4, 4 };
-    //if not, don't create anything
-    else if (is_pellet == false)
+    //if big pellet
+    else if (pellet_type == 2)
+        hitbox = { (x + TILE_WIDTH/2 - 6), (y + TILE_HEIGHT/2 - 6), 12, 12 };
+        //if no pellet
+    else if (pellet_type == 0)
         hitbox = { 0, 0, 0, 0};
 }
 

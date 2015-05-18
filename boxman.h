@@ -22,7 +22,7 @@ class Boxman : Collider
 {
 public:
     //constants
-    const static int SPEED = 2;
+    const static int SPEED = 3;
     const static int WIDTH = TILE_WIDTH;
     const static int HEIGHT = TILE_HEIGHT;
     
@@ -51,7 +51,7 @@ public:
     void render();
     
 private:
-    //pointer to Game spritesheet
+    //pointer to Game's spritesheet
     Texture* spritesheet;
     
     //position on window

@@ -155,6 +155,23 @@ void Boxman::move()
     
     //check for pellet collisions
     check_pellet_collisions();
+    
+    //if past right side of map
+    if (x_pos >= WINDOW_WIDTH)
+    {
+        //position boxman at left side
+        x_pos = 0 - TILE_WIDTH;
+        hitbox.x = 0 - TILE_WIDTH;
+        x_tile = 0;
+    }
+    //if past left side of map
+    else if (x_pos + TILE_WIDTH <= 0)
+    {
+        //position boxman at right side
+        x_pos = WINDOW_WIDTH;
+        hitbox.x = WINDOW_WIDTH;
+        x_tile = 24;
+    }
 }
 
 
@@ -194,24 +211,34 @@ bool Boxman::moved_into_obstacle()
     //if boxman collided with below tile
     else if ( collided( (*tiles)[y_tile + 1][x_tile] ) )
         return true;
-    //if boxman collided with right tile
-    else if ( collided( (*tiles)[y_tile][x_tile + 1] ) )
-        return true;
-    //if boxman collided with left tile
-    else if ( collided( (*tiles)[y_tile][x_tile - 1] ) )
-        return true;
-    //if boxman collided with above-right tile
-    else if ( collided( (*tiles)[y_tile - 1][x_tile + 1] ) )
-        return true;
-    //if boxman collided with below-right tile
-    else if ( collided( (*tiles)[y_tile + 1][x_tile + 1] ) )
-        return true;
-    //if boxman collided with below-left tile
-    else if ( collided( (*tiles)[y_tile + 1][x_tile - 1] ) )
-        return true;
-    //if boxman collided with above-left tile
-    else if ( collided( (*tiles)[y_tile - 1][x_tile - 1] ) )
-        return true;
+    
+    //if boxman isn't at a rightmost tile (to prevent vector bound errors)
+    if ( x_tile < 24)
+    {
+        //if boxman collided with above-right tile
+        if ( collided( (*tiles)[y_tile - 1][x_tile + 1] ) )
+            return true;
+        //if boxman collided with right tile
+        else if ( collided( (*tiles)[y_tile][x_tile + 1] ) )
+            return true;
+        //if boxman collided with below-right tile
+        else if ( collided( (*tiles)[y_tile + 1][x_tile + 1] ) )
+            return true;
+    }
+    
+    //if boxman isn't at a leftmost tile (to prevent vector bound errors)
+    if ( x_tile > 0)
+    {
+        //if boxman collided with below-left tile
+        if ( collided( (*tiles)[y_tile + 1][x_tile - 1] ) )
+            return true;
+        //if boxman collided with left tile
+        else if ( collided( (*tiles)[y_tile][x_tile - 1] ) )
+            return true;
+        //if boxman collided with above-left tile
+        else if ( collided( (*tiles)[y_tile - 1][x_tile - 1] ) )
+            return true;
+    }
     
     return false;
 }
