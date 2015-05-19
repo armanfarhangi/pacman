@@ -49,6 +49,9 @@ private:
     
     //timer
     Timer first_timer;
+    
+    //vibration animation
+    int vibration;
 };
 
 

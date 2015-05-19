@@ -32,6 +32,9 @@ Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile)
     
     //start timer
     first_timer.start();
+    
+    //set vibration to zero
+    vibration = 0;
 }
 
 //move baddie
@@ -56,6 +59,18 @@ void Baddie::move()
 //render baddie
 void Baddie::render()
 {
-    spritesheet->render(x_pos, y_pos, &clip);
+    //create vibrating animation by rendering slightly offset for each frame
+    if (vibration == 0)
+        spritesheet->render(x_pos, y_pos, &clip);
+    else if (vibration == 1)
+        spritesheet->render(x_pos + vibration, y_pos, &clip);
+    else if (vibration == 2)
+        spritesheet->render(x_pos, y_pos, &clip);
+    else if (vibration == 3)
+        spritesheet->render(x_pos, y_pos + vibration, &clip);
+    ++vibration;
+    if (vibration == 4)
+        vibration = 0;
+
 }
 
