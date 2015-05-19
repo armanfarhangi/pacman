@@ -352,9 +352,9 @@ void Game::maze()
     
     //baddies
     std::vector<Baddie> baddies;
-    baddies.push_back( Baddie(&spritesheet, &boxman, 11, 12) );
-    baddies.push_back( Baddie(&spritesheet, &boxman, 12, 13) );
-    baddies.push_back( Baddie(&spritesheet, &boxman, 13, 12) );
+    baddies.push_back( Baddie(&spritesheet, &boxman, 11, 12, 1, &tiles) );
+    baddies.push_back( Baddie(&spritesheet, &boxman, 12, 13, 2, &tiles) );
+    baddies.push_back( Baddie(&spritesheet, &boxman, 13, 12, 3, &tiles) );
     
     
     //winning text

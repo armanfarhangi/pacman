@@ -9,7 +9,7 @@
 /******* BADDIE CLASS DEFS *******/
 
 //constructor
-Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile)
+Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile, int type, std::vector<std::vector<Tile>>* tiles)
 {
     //set spritesheet reference
     Baddie::spritesheet = spritesheet;
@@ -20,6 +20,11 @@ Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile)
     //set position
     x_pos = x_tile * TILE_WIDTH;
     y_pos = y_tile * TILE_HEIGHT;
+    x_tile = (x_pos + TILE_WIDTH/2) / TILE_WIDTH;
+    y_tile = (y_pos + TILE_HEIGHT/2) / TILE_HEIGHT;
+    
+    //set type
+    Baddie::type = type;
     
     //set hitbox values
     hitbox = { x_pos, y_pos, TILE_WIDTH, TILE_HEIGHT};
@@ -35,24 +40,81 @@ Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile)
     
     //set vibration to zero
     vibration = 0;
+    
+    //set tiles pointer
+    Baddie::tiles = tiles;
 }
 
 //move baddie
 void Baddie::move()
 {
-    //if it hasn't been  been 5 seconds from beginning
-    if ( first_timer.check() < 5000)
+    //if it hasn't been  been 7 seconds from beginning of game
+    if ( first_timer.check() <= 7000)
     {
-        if (y_pos <= TILE_HEIGHT * 12)
-            moving_state = MOVING_DOWN;
-        else if (y_pos >= TILE_HEIGHT* 13)
-            moving_state = MOVING_UP;
+        if (first_timer.check() <= 4000)
+        {
+            // gear down if at top of center square
+            if (y_pos <= TILE_HEIGHT * 12)
+                moving_state = MOVING_DOWN;
+            //gear up if at bottom of center square
+            else if (y_pos >= TILE_HEIGHT* 13)
+                moving_state = MOVING_UP;
+        }
         
+        //if it has been past four seconds from the beginning of game
+        else if (first_timer.check() > 4000)
+        {
+            //if they're not on the 11th tile row
+            if (y_pos != TILE_HEIGHT * 10)
+                //gear up
+                moving_state = MOVING_UP;
+            //otherwise
+            else
+                //don't move
+                moving_state = NONE;
+        }
+        
+        //move (slowly) depending on moving state
         if (moving_state == MOVING_DOWN)
             y_pos += SPEED - 2;
         else if (moving_state == MOVING_UP)
             y_pos += -(SPEED - 2);
     }
+    
+    //if it has been 7 seconds from the beginning of the game
+    else if (first_timer.check() > 7000)
+    {
+        //start another timer
+        second_timer.start();
+        
+        //if second timer hasn't reached 5 seconds
+        if (second_timer.check() <= 5000)
+        {
+            //if type 1 baddie
+            if (type == 1)
+            {
+                //if to the right of the top left tile of maze
+                if (x_pos > TILE_WIDTH * 3)
+                {
+                    //gear left
+                    moving_state = MOVING_LEFT;
+                }
+                
+            }
+            
+            //if geared left and can move left
+            if ( moving_state == MOVING_LEFT && can_move_left() )
+            {
+                //move left
+                x_pos -= SPEED;
+            }
+        }
+
+    }
+    
+    //set tile position
+    x_tile = (x_pos + WIDTH/2) / TILE_WIDTH;
+    y_tile = (y_pos + HEIGHT/2) / TILE_HEIGHT;
 }
 
 
@@ -67,10 +129,46 @@ void Baddie::render()
     else if (vibration == 2)
         spritesheet->render(x_pos, y_pos, &clip);
     else if (vibration == 3)
+        spritesheet->render(x_pos - vibration, y_pos, &clip);
+    else if (vibration == 4)
+        spritesheet->render(x_pos, y_pos, &clip);
+    else if (vibration == 5)
         spritesheet->render(x_pos, y_pos + vibration, &clip);
+    else if (vibration == 6)
+        spritesheet->render(x_pos, y_pos, &clip);
+    else if (vibration == 7)
+        spritesheet->render(x_pos, y_pos - vibration, &clip);
     ++vibration;
-    if (vibration == 4)
+    if (vibration == 8)
         vibration = 0;
 
+}
+
+
+//check if baddie has an aligned non-obstacle tile to the right
+bool Baddie::can_move_right()
+{
+    return ((*tiles)[y_tile][x_tile + 1].get_state() == NON_OBSTACLE && y_pos % 30 == 0 );
+}
+
+
+//check if baddie has an aligned non-obstacle tile to the left
+bool Baddie::can_move_left()
+{
+    return ( (*tiles)[y_tile][x_tile - 1].get_state() == NON_OBSTACLE  && y_pos % 30 == 0 );
+}
+
+
+//check if baddie has an aligned non-obstacle tile above
+bool Baddie::can_move_up()
+{
+    return ( (*tiles)[y_tile - 1][x_tile].get_state() == NON_OBSTACLE && x_pos % 30 == 0 );
+}
+
+
+//check if baddie has an aligned non-obstacle tile below
+bool Baddie::can_move_down()
+{
+    return ( (*tiles)[y_tile + 1][x_tile].get_state() == NON_OBSTACLE && x_pos % 30 == 0 );
 }
 

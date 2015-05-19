@@ -312,3 +312,17 @@ void Boxman::stop()
     x_vel = 0;
     y_vel = 0;
 }
+
+//get x coordinate
+int Boxman::get_x()
+{
+    return x_pos;
+}
+
+
+//get y coordinate
+int Boxman::get_y()
+{
+    return y_pos;
+}
+

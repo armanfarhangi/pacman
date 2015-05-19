@@ -22,10 +22,16 @@ public:
     const static int HEIGHT = TILE_HEIGHT;
     
     //constructor
-    Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile);
+    Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile, int type, std::vector<std::vector<Tile>>* tiles);
     
     //move baddie
     void move();
+    
+    //check if baddie can move a certain direction
+    bool can_move_right();
+    bool can_move_left();
+    bool can_move_up();
+    bool can_move_down();
     
     //render baddie
     void render();
@@ -43,15 +49,25 @@ private:
     //position in pixels
     int x_pos;
     int y_pos;
+    //position in tiles
+    int x_tile;
+    int y_tile;
+    
+    //type of baddie (determines movement behavior)
+    int type;
     
     //moving state
     int moving_state;
     
-    //timer
+    //timers
     Timer first_timer;
+    Timer second_timer;
     
     //vibration animation
     int vibration;
+    
+    //pointer to map tiles (to check for obstacles)
+    std::vector<std::vector<Tile>>* tiles;
 };
 
 

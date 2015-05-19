@@ -53,6 +53,10 @@ public:
     //get pellet count
     int get_count();
     
+    //position accessors
+    int get_x();
+    int get_y();
+    
     //render boxman
     void render();
     
