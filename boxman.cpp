@@ -60,7 +60,7 @@ Boxman::Boxman(Texture* spritesheet, std::vector<std::vector<Tile>>* map_tiles, 
     y_vel = 0;
     
     //initialize direction queue
-    direction_queue = MOVING_RIGHT;
+    direction_queue = NONE;
     
     //set tiles pointer
     tiles = map_tiles;

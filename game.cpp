@@ -14,6 +14,7 @@
 #include "tile.h"
 #include "boxman.h"
 #include "pellet.h"
+#include "baddie.h"
 
 
 /******* GAME CLASS DEFS *******/
@@ -349,6 +350,13 @@ void Game::maze()
     //boxman
     Boxman boxman(&spritesheet, &tiles, &pellets);
     
+    //baddies
+    std::vector<Baddie> baddies;
+    baddies.push_back( Baddie(&spritesheet, &boxman, 11, 12) );
+    baddies.push_back( Baddie(&spritesheet, &boxman, 12, 13) );
+    baddies.push_back( Baddie(&spritesheet, &boxman, 13, 12) );
+    
+    
     //winning text
     Texture you_win;
     SDL_Color color = {250, 218, 10, 255};
@@ -377,6 +385,10 @@ void Game::maze()
         //move boxman
         boxman.move();
         
+        //move baddies
+        for (int i = 0; i < baddies.size(); ++i)
+            baddies[i].move();
+        
         //render tiles
         for (int i = 0; i < Y_TILES; ++i)
            for (int j = 0; j < X_TILES; ++j)
@@ -390,6 +402,10 @@ void Game::maze()
         for (int i = 0; i < Y_TILES; ++i)
             for (int j = 0; j < X_TILES; ++j)
                 pellets[i][j].render();
+        
+        //render baddies
+        for (int i = 0; i < baddies.size(); ++i)
+            baddies[i].render();
         
         //render boxman
         boxman.render();

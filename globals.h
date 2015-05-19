@@ -41,7 +41,7 @@ enum Level { MENU, MAZE, INSTRUCTIONS, END };
 enum Texture_Centered_State { CENTERED, NOT_CENTERED };
 
 //boxman animation state enumerations
-enum Moving_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING };
+enum Moving_State { MOVING_RIGHT, MOVING_LEFT, MOVING_UP, MOVING_DOWN, DYING, NONE };
 
 //tile obstacle state
 enum Obstacle_State { NON_OBSTACLE, OBSTACLE };
