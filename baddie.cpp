@@ -5,6 +5,7 @@
 
 //headers
 #include "baddie.h"
+#include <iostream>
 
 /******* BADDIE CLASS DEFS *******/
 
@@ -20,8 +21,8 @@ Baddie::Baddie(Texture* spritesheet, Boxman* boxman, int x_tile, int y_tile, int
     //set position
     x_pos = x_tile * TILE_WIDTH;
     y_pos = y_tile * TILE_HEIGHT;
-    x_tile = (x_pos + TILE_WIDTH/2) / TILE_WIDTH;
-    y_tile = (y_pos + TILE_HEIGHT/2) / TILE_HEIGHT;
+    Baddie::x_tile = x_tile;
+    Baddie::y_tile = y_tile;
     
     //set type
     Baddie::type = type;
@@ -107,14 +108,15 @@ void Baddie::move()
             {
                 //move left
                 x_pos -= SPEED;
+                hitbox.x -= SPEED;
             }
         }
 
     }
     
     //set tile position
-    x_tile = (x_pos + WIDTH/2) / TILE_WIDTH;
-    y_tile = (y_pos + HEIGHT/2) / TILE_HEIGHT;
+    x_tile = (x_pos + TILE_WIDTH/2) / TILE_WIDTH;
+    y_tile = (y_pos + TILE_HEIGHT/2) / TILE_HEIGHT;
 }
 
 

@@ -392,7 +392,7 @@ void Game::maze()
         //render tiles
         for (int i = 0; i < Y_TILES; ++i)
            for (int j = 0; j < X_TILES; ++j)
-                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiles[i][j].get_clip(), NOT_CENTERED);
+                spritesheet.render(TILE_WIDTH*j, TILE_HEIGHT*i, &tiles[i][j].get_clip());
         
         //render white window outline
         SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );

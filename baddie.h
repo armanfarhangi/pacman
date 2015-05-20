@@ -36,6 +36,9 @@ public:
     //render baddie
     void render();
     
+    //tile tracker
+    int tile_tracker;
+    
 private:
     //pointer to Game spritesheet
     Texture* spritesheet;
