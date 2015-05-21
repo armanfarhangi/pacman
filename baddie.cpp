@@ -85,38 +85,13 @@ void Baddie::move()
     //if it has been 7 seconds from the beginning of the game
     else if (first_timer.check() > 7000)
     {
-        //start another timer
-        second_timer.start();
         
-        //if second timer hasn't reached 5 seconds
-        if (second_timer.check() <= 5000)
-        {
-            //if type 1 baddie
-            if (type == 1)
-            {
-                //if to the right of the top left tile of maze
-                if (x_pos > TILE_WIDTH * 3)
-                {
-                    //gear left
-                    moving_state = MOVING_LEFT;
-                }
-                
-            }
-            
-            //if geared left and can move left
-            if ( moving_state == MOVING_LEFT && can_move_left() )
-            {
-                //move left
-                x_pos -= SPEED;
-                hitbox.x -= SPEED;
-            }
-        }
 
+        
+        //set tile position
+        x_tile = (x_pos + TILE_WIDTH/2) / TILE_WIDTH;
+        y_tile = (y_pos + TILE_HEIGHT/2) / TILE_HEIGHT;
     }
-    
-    //set tile position
-    x_tile = (x_pos + TILE_WIDTH/2) / TILE_WIDTH;
-    y_tile = (y_pos + TILE_HEIGHT/2) / TILE_HEIGHT;
 }
 
 
